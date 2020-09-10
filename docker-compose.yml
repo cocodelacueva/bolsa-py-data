@@ -11,7 +11,7 @@ services:
         ports:
             - "3320:3306"
         environment:
-            MYSQL_ROOT_PASSWORD: 123
+            MYSQL_ROOT_PASSWORD: root
             MYSQL_DATABASE: bolsa
             MYSQL_USER: user
             MYSQL_PASSWORD: 123
@@ -28,20 +28,20 @@ services:
             - PMA_ARBITRARY=1
             - PMA_HOST=db
 
-    python:
-        build: .        
-        container_name: app-python      
-        command: python app.py
-        restart: always        
-        working_dir: /app
-        volumes:
-            - ./bolsa-py:/app
-        environment:
-            MYSQL_HOST: db
-            MYSQL_DATABASE: bolsa
-            MYSQL_USER: root
-            MYSQL_PASSWORD: 123
-            MYSQL_PORT: 3306
+    # python:
+    #     build: .        
+    #     container_name: app-python      
+    #     command: python app.py
+    #     restart: always        
+    #     working_dir: /app
+    #     volumes:
+    #         - ./bolsa-py:/app
+    #     environment:
+    #         MYSQL_HOST: db
+    #         MYSQL_DATABASE: bolsa
+    #         MYSQL_USER: root
+    #         MYSQL_PASSWORD: 123
+    #         MYSQL_PORT: 3306
         
 volumes:    
     volume-db:       

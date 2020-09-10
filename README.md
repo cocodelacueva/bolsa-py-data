@@ -13,3 +13,7 @@ Captura los datos de valores de la bolsa para volcarlos en algunas bases de dato
 ## CODIGO
 
 Armado en python, por ahora es un codigo fuera del contenedor. Su función es llamar a la api, para luego almacenar las respuestas en la base de datos MySQL.
+
+## Documentacion
+
+* PyMysql: https://pymysql.readthedocs.io/en/latest/user/examples.html
