@@ -17,3 +17,4 @@ Armado en python, por ahora es un codigo fuera del contenedor. Su función es ll
 ## Documentacion
 
 * PyMysql: https://pymysql.readthedocs.io/en/latest/user/examples.html
+* schedule https://schedule.readthedocs.io/en/stable/

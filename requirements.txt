@@ -1,1 +1,4 @@
 PyMySQL
+loguru
+schedule
+pytz
