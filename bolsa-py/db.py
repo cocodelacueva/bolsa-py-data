@@ -56,7 +56,7 @@ class Database:
                 cur.close()
                 return affected
         except pymysql.MySQLError as e:
-            logger(e)
+            logger.error(e)
             sys.exit()
         finally:
             if self.conn:
@@ -65,8 +65,39 @@ class Database:
                 logger.info('Database connection closed.')
 
     
+    #insert valores 
+    def insert_many_values(self, query, values):
+        """inser in SQL."""
+        print(values)
+        print(query)
+        try:
+            self.open_connection()
+            with self.conn.cursor() as cur:
+                cur.executemany(query, values )
+                self.conn.commit()
+                affected = f"{cur.rowcount} rows affected."
+                cur.close()
+                return affected
+        except pymysql.MySQLError as e:
+            logger.error(e)
+            sys.exit()
+        finally:
+            if self.conn:
+                self.conn.close()
+                self.conn = None
+                logger.info('Database connection closed.')
+
+
+
+    
     #Selecciona todas las row de la tabla pasada
     def select_all(self, table):
 
         query = 'SELECT * FROM ' + table
         return self.run_query(query)
+
+
+    def insert_valores_simbolo(self, valores):
+       
+        query = """INSERT INTO `merbal` (`simbolo`, `puntas_cantidad_compra`, `puntas_precio_compra`, `puntas_precio_venta`, `puntas_cantidad_venta`, `ultimo_precio`, `variacion_porcentual`, `apertura`, `maximo`, `minimo`, `ultimo_cierre`, `volumen`, `cantidad_operaciones`, `fecha`, `tipo_opcion`, `precio_ejercicio`, `fecha_vencimiento`, `mercado`, `moneda`) VALUES ( %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s )"""
+        return self.insert_many_values(query, valores)
