@@ -10,42 +10,15 @@ db = Database(config)
 with open(config.basedir+"/valores.json") as json_file:
     data = json.load(json_file)
     print(data['titulos'][0]['fecha'] )
+    valores = []
 
     for simbolo in data['titulos']:
-        #le pongo las doble comillas porque todo es texto y la comilla single para que mysql entienda que es una variable, si es null, va SIN comillas simples pero siempre dentro de las dos comillas
-        # simb = "'"+simbolo['simbolo']+"'"
-        # pCantCompra = "'"+simbolo['puntas']['cantidadCompra']+"'"
-        # pPreCompra= "'"+simbolo['puntas']['precioCompra']+"'"
-        # pPreVenta = "'"+simbolo['puntas']['precioVenta']+"'"
-        # pCantVenta= "'"+simbolo['puntas']['cantidadVenta']+"'"
-        # ultPrecio= "'"+simbolo['ultimoPrecio']+"'"
-        # varPorcent = "'"+simbolo['variacionPorcentual']+"'"
-        # apert = "'"+simbolo['apertura']+"'"
-        # maximo = "'"+simbolo['maximo']+"'"
-        # minimo = "'"+simbolo['minimo']+"'"
-        # ultCierre = "'"+simbolo['ultimoCierre']+"'"
-        # volumen = "'"+simbolo['volumen']+"'"
-        # cantOper =  "'"+simbolo['cantidadOperaciones']+"'"
-        # fecha = "'"+simbolo['fecha']+"'"
-        # tipoOpc = "NULL" if simbolo['tipoOpcion'] == 'null' else "'"+simbolo['tipoOpcion']+"'"
-        # precEjerc = "NULL" if simbolo['precioEjercicio'] == 'null' else "'"+simbolo['precioEjercicio']+"'"
-        # fechaVenc= "NULL" if simbolo['fechaVencimiento'] == 'null' else "'"+simbolo['fechaVencimiento']+"'"
-        # mercado = "'"+simbolo['mercado']+"'"
-        # moneda = "'"+simbolo['moneda']+"'"
 
-        # valores = simb + ", " + pCantCompra + ", " + pPreCompra + ", " + pPreVenta + ", " + pCantVenta + ", " + ultPrecio + ", " +varPorcent + ", " + apert + ", " + maximo + ", " + minimo + ", " + ultCierre + ", " + volumen + ", " + cantOper + ", " + fecha + ", " + tipoOpc + ", " + precEjerc + ", " + fechaVenc + ", " + mercado + ", " + moneda
+        valor = (simbolo['simbolo'], simbolo['puntas']['cantidadCompra'], simbolo['puntas']['precioCompra'], simbolo['puntas']['precioVenta'], simbolo['puntas']['cantidadVenta'], simbolo['ultimoPrecio'], simbolo['variacionPorcentual'], simbolo['apertura'], simbolo['maximo'], simbolo['minimo'], simbolo['ultimoCierre'], simbolo['volumen'], simbolo['cantidadOperaciones'], simbolo['fecha'], simbolo['tipoOpcion'], simbolo['precioEjercicio'], simbolo['fechaVencimiento'], simbolo['mercado'], simbolo['moneda'])
 
-        valores = [
-            (simbolo['simbolo'], simbolo['puntas']['cantidadCompra'], simbolo['puntas']['precioCompra'], simbolo['puntas']['precioVenta'], simbolo['puntas']['cantidadVenta'], simbolo['ultimoPrecio'], simbolo['variacionPorcentual'], simbolo['apertura'], simbolo['maximo'], simbolo['minimo'], simbolo['ultimoCierre'], simbolo['volumen'], simbolo['cantidadOperaciones'], simbolo['fecha'], simbolo['tipoOpcion'], simbolo['precioEjercicio'], simbolo['fechaVencimiento'], simbolo['mercado'], simbolo['moneda'])
-        ]
+        valores.append(valor)
         
-        
-        
-
-        queryResponse = db.insert_valores_simbolo(valores)
-
-        break
-        
+    queryResponse = db.insert_valores_simbolo(valores)
         
 
 # db = Database(config)
