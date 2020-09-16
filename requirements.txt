@@ -1,5 +1,4 @@
 PyMySQL
 loguru
 schedule
-pytz
 json
