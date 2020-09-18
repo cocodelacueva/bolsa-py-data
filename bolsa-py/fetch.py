@@ -2,11 +2,16 @@ import urllib.request
 import urllib.parse
 import json
 
+#clase que hace los pedidos fetch a la base de invertir online
+
 class ApiInvertirOnline:
     """Database connection class."""
 
-    def __init__(self):
-        self.urlBase = 'https://api.invertironline.com/api/v2/'    
+    def __init__(self, config):
+        self.urlBase = config.urlApilBase
+        self.urlToken = config.urlApiToken
+        self.apiUsername = config.apiUser
+        self.apiPassword = config.apiPw
 
 
     #Toma la data por get
@@ -64,7 +69,7 @@ class ApiInvertirOnline:
             response = urllib.request.urlopen(req)
             respuesta['status']['code'] = 200
             respuesta['status']['error'] = False
-            respuesta['data'] = response.read()
+            respuesta['data'] = json.loads(response.read().decode('ascii'))
             response.close()
 
         except urllib.error.URLError as e:
@@ -80,11 +85,9 @@ class ApiInvertirOnline:
 
 
     #login, primer token
-    def getToken(self, refresh_token=False, user="", password=""):
+    def getToken(self, refresh_token=False):
         respuesta = {}
         respuesta['status'] = {}
-        
-        url = 'https://api.invertironline.com/token'
 
         headers = {
             "User-Agent": "Mozilla/5.0",
@@ -95,8 +98,8 @@ class ApiInvertirOnline:
         if refresh_token == False :         
             valores = {
                 "grant_type" : "password",
-                "username" : user,
-                "password" : password
+                "username" : self.apiUsername,
+                "password" : self.apiPassword
             }
             data = urllib.parse.urlencode(valores)
             data = data.encode('ascii')
@@ -109,7 +112,7 @@ class ApiInvertirOnline:
             data = urllib.parse.urlencode(valores)
             data = data.encode('ascii')
 
-        req = urllib.request.Request(url=url, data=data, headers=headers, method="POST")
+        req = urllib.request.Request(url=self.urlToken, data=data, headers=headers, method="POST")
         
         try:
             response = urllib.request.urlopen(req)
@@ -141,22 +144,62 @@ class ApiInvertirOnline:
         return self.getFectchDataByGet(token, url)
 
 
+    #esta funcion arma por completo el siclo que se hace cada 50 minutos, pide los token pide las cotizaciones, guarda en la bd
+    def cicleTokenValoresOnApi(self, refToken):
+        respuesta = {}
+        respuesta['status'] = {}
+        respuesta['status']['code'] = 'ok'
+        respuesta['status']['error'] = False
+
+        #primer intento con refToken
+        resp1 = self.getToken(refToken)
+        if resp1['status']['code'] == 200:
+
+            token = resp1['data']['access_token']
+            respuesta['newrefToken'] = resp1['data']['refresh_token']
+            
+            #va a buscar cotizaciones
+            resp2 = self.getCotizacionesAcciones(token)
+            if resp2['status']['code'] == 200:
+                
+                respuesta['data'] = resp2['data']
+
+            else : 
+                print('falla refreshToken')
+                
+                respuesta['status']['code'] = 'error-get-valores'
+                respuesta['status']['error'] = resp2['status']['code']
+
+        #sedundo intento
+        #si el refresh token falla va a buscar el primer token con user y pw
+        else : 
+            print('falla refreshToken')
+            
+            resp2 = self.getToken(False)
+            if resp2['status']['code'] == 200:
+
+                token = resp2['data']['access_token']
+                respuesta['newrefToken'] = resp2['data']['refresh_token']
+                
+                #va a buscar cotizaciones
+                resp3 = self.getCotizacionesAcciones(token)
+                if resp3['status']['code'] == 200:
+                    
+                    respuesta['data'] = resp3['data']
+
+                else : 
+                    print('falla refreshToken')
+                    
+                    respuesta['status']['code'] = 'error-get-valores'
+                    respuesta['status']['error'] = resp3['status']['code']
 
 
-
-# invOnlFetchToekn = ApiInvertirOnline()
-# resp = invOnlFetchToekn.getToken(False, 'cocodelacueva', 'EmiliaIsabela44')
-# print(resp['data']['access_token'])
-
-#jsonRespuesta = {"access_token":"fulTECkpVCQc9MXkFitGEhtHbDqFjvgAJ-E2u0bP43Rp2BlBhuaJx0aM20EIfHXJyLUP1PiyrHZzfyckJzyHdPNN6tt3DqkdcQ-C17cx96-E4Gp4pT9Et-ULCHYQkOJ5egZhG_QaFpOHXIVYKU8spkmWu8KLFtJ-452aksok152XUlc0bZBGap9lMFwJjs2z90I8JynbRNZs38q1RoBtqAbHwFYeYTEWg9RZnQK9bg3p9Z1_HlRM9hr6ud3IEc4yaKp5Y270oIyar4FOtmM6TR2UHp7Qkzap6UWaAZ5vwamGBjHUH--UGzAJ5Uvdw5AxU6i_Pdk9Px4co8Lg64Nra7pZaI2Dvmc2cH2ZHXQ4e0vy6xb7OedCAN3kg5Yi2_v2","token_type":"bearer","expires_in":899,"refresh_token":"wxgBEg4HqFDiE62YenhjIMnU6qr5-vK4YMiDuFN17O3LexBRhoJ79ZQ9lAbYKa1NdI_WgA_FnWh5QjlnNSV6fwrDBAHO55oexgk6Oq8XMOshNQRbIVfHkG7E8LeExfd0wI1JYriztBNa-yze_r0eDZMyfKTGXF2oV9QQglCV6OEFp33S_HxKRAY0b1F7_8yI1KFWCqnYYzZUSh6ru2O2_BaZqHETHid_BdE940mbuXxIwculS1ZyYt_W4bfH4X7pN8ClvqUVCSbd9gs3wIZa9wMnFm7XRrPPlSdp05h9EqSLGnyoZLb1nFp7YA1XRB8UhfSwggnrq2ZSfNoy2FYeHAXBkFuiFVXaGkmABvNDgqY9VQmEhRzfSBC5BVuZscig",".issued":"Thu, 17 Sep 2020 01:01:54 GMT",".expires":"Thu, 17 Sep 2020 01:16:54 GMT",".refreshexpires":"Thu, 17 Sep 2020 02:01:54 GMT"}
-
-#datos = ApiInvertirOnline()
+            else : 
+                print('falla refreshToken')
+                respuesta['status']['code'] = 'error-token'
+                respuesta['status']['error'] = resp2['status']['code']
 
 
-
-#data = json.load(jsonRespuesta)
-#print(data)
-#resp = datos.getToken(False, 'cocodelacueva', 'EmiliaIsabela44')
-#resp = datos.getToken(token)
-# resp = datos.getCotizacionesAcciones(data['access_token'])
-# print(resp['data'])
+        #finalmente, pase lo que pase, devuelve la respuesta con la info
+        return respuesta
+            

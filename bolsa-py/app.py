@@ -1,86 +1,49 @@
 import os
 import config
-#from db import Database
+from db import Database
 import json
 from fetch import ApiInvertirOnline
-valores = []
-token = ''
-refresToken = False
 
 
+valores = [] #los valores que se van a grabar luego
+refresToken = False #refresh token por defecto en falso
 
-#pide el token por primera vez y pide cotizaciones
-def getFirstToken(us, pw):
-    invOnlFetchToekn = ApiInvertirOnline()
-    resp = invOnlFetchToekn.getToken(False, us, pw)
-    if resp['status']['code'] == 200:
-        global token
-        global refreshToken
-        token = resp['data']['access_token']
-        refresToken = resp['data']['refresh_token']
-
-        getCotizaciones(token)
-
-    else : 
-        print('falla getToken')
-        print(resp['status']['code'])
-        print(resp['status']['error'])
-        return
+#se instancian las clases
+invOnlFetch = ApiInvertirOnline(config)
+db = Database(config)
 
 
-#toma el frefresh token para buscar un token y pedir cotizaciones
-def refreshToken(refToken):
-    
-    invOnlFetchToekn = ApiInvertirOnline()
-    resp = invOnlFetchToekn.getToken(refToken)
-    if resp['status']['code'] == 200:
-        global token
-        global refreshToken
-        token = resp['data']['access_token']
-        refresToken = resp['data']['refresh_token']
+#1 recuperamos el refresh token de la bd
+querySelect = "SELECT * FROM `options` WHERE name='refresh-token'"
+resp = db.run_query(querySelect)
+if resp[0][2] != '':
+    refresToken = resp[0][2]
 
-        getCotizaciones(token)
+#con el refresh token hacemos el pedido (primero va a buscar el token)
+respuesta = invOnlFetch.cicleTokenValoresOnApi(refresToken)
 
-    else : 
-        print('falla refreshToken')
+#si repsuesta es ok, se graba en la bd los valores y el newRefrestoken
+if respuesta['status']['code'] == 'ok':
         
-        getFirstToken(user, password)
+    data = respuesta['data']
+    print(data)
+    for simbolo in data['titulos']:
 
-        return
+        valor = (simbolo['simbolo'], simbolo['puntas']['cantidadCompra'], simbolo['puntas']['precioCompra'], simbolo['puntas']['precioVenta'], simbolo['puntas']['cantidadVenta'], simbolo['ultimoPrecio'], simbolo['variacionPorcentual'], simbolo['apertura'], simbolo['maximo'], simbolo['minimo'], simbolo['ultimoCierre'], simbolo['volumen'], simbolo['cantidadOperaciones'], simbolo['fecha'], simbolo['tipoOpcion'], simbolo['precioEjercicio'], simbolo['fechaVencimiento'], simbolo['mercado'], simbolo['moneda'])
 
+        valores.append(valor)
 
-# pide las cotizaciones de los titulos
-def getCotizaciones(token):
-    
-    invOnlFetchToekn = ApiInvertirOnline()
-    resp = invOnlFetchToekn.getCotizacionesAcciones(token)
+   
+    queryResponse = db.insert_valores_simbolo(valores)
+    print(queryResponse)
 
-    if resp['status']['code'] == 200:
-        
-        data = resp['data']
-        print(data)
-        for simbolo in data['titulos']:
+    #guarda el refresh token
+    newRefresToken = respuesta['newrefToken']
+    if newRefresToken != '':
+        query = "UPDATE options SET value = '"+newRefresToken+"' WHERE name = 'refresh-token'"
+        db.run_query(query)
 
-            valor = (simbolo['simbolo'], simbolo['puntas']['cantidadCompra'], simbolo['puntas']['precioCompra'], simbolo['puntas']['precioVenta'], simbolo['puntas']['cantidadVenta'], simbolo['ultimoPrecio'], simbolo['variacionPorcentual'], simbolo['apertura'], simbolo['maximo'], simbolo['minimo'], simbolo['ultimoCierre'], simbolo['volumen'], simbolo['cantidadOperaciones'], simbolo['fecha'], simbolo['tipoOpcion'], simbolo['precioEjercicio'], simbolo['fechaVencimiento'], simbolo['mercado'], simbolo['moneda'])
-
-            valores.append(valor)
-        
-        print(valores)
-        #db = Database(config)
-        #queryResponse = db.insert_valores_simbolo(valores)
-
-    else : 
-        print('falla getValores')
-        print(resp['status']['code'])
-        print(resp['status']['error'])
-        return
-
-        
-# accede a la api de invertir online para acceder a los datos
-
-if refresToken == False:
-    
-    getFirstToken(user, password)
-
-else:
-    refreshToken(refreshToken)
+else :
+    error = respuesta['status']['code']
+    query = "INSERT INTO `logs` (`error_code`, `extra-data` ) VALUES ('"+error+"', '')"
+    db.run_query(query)

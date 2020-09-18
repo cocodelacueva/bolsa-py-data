@@ -42,6 +42,10 @@ services:
     #         MYSQL_USER: root
     #         MYSQL_PASSWORD: 123
     #         MYSQL_PORT: 3306
+    #         API_USER: 
+    #         API_PW: 
+    #         API_URL_BASE: https://api.invertironline.com/api/v2/
+    #         API_URL_TOKEN: https://api.invertironline.com/token
         
 volumes:    
     volume-db:       
