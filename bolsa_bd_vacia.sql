@@ -82,7 +82,7 @@ CREATE TABLE `options` (
 --
 
 INSERT INTO `options` (`id`, `name`, `value`, `extra_value`) VALUES
-(1, 'refresh-token', 'uMIwIOZnmrn2R7ij5ZB2mMnyVTdxtdHZJwxbWlArtmodJF7QV6d5OrH04-2dUsAmVSCzSVShjsxNXyUeK2oII5m9uluatNM62Jd0KLhkEin3YEQUb63psgyrPh6kt_La323prUmbqMPT4VPCUSFPZkWCLtC6xIinIK7Y8oODoIuhPL9r5lyoGUtxs-EKPI07yjgTgM7QGIOB3-XBaY2yK2jz9T937Kwr5mDENrjTGvhMCilGcjcbkOXisZRA5qPSh-8QKF5aj6GrkoNz8_FTHzbm-604RC6MIGJ4eAsswE1630mNDD6cxtR5_4N6f9pazDivCNb40FXxlZGYROgRYYzQEzXs50z66aXT6NIvCNTwtcnRM2_20vb8SN8AaEFG', '');
+(1, 'refresh-token', '', '');
 
 --
 -- Índices para tablas volcadas

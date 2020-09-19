@@ -14,6 +14,10 @@ Captura los datos de valores de la bolsa para volcarlos en algunas bases de dato
 
 Armado en python, por ahora es un codigo fuera del contenedor. Su función es llamar a la api, para luego almacenar las respuestas en la base de datos MySQL.
 
+## Flask:
+Las rutas son para setear un cron desde afuera, cada ruta es una funcion, por ejemplo update-merval, ejecuta la funcion cada 50 segundos del chequeo de los valores
+Le debería agregar otras rutas para refrescar otros valores.
+
 ## Documentacion
 
 * PyMysql: https://pymysql.readthedocs.io/en/latest/user/examples.html
