@@ -8,8 +8,20 @@ from fetch import ApiInvertirOnline
 
 def insert_simbolos_in_db():
 
-    valores = [] #los valores que se van a grabar luego
+    # VARIABLES VASICAS
     refresToken = False #refresh token por defecto en falso
+    datosFetch = [
+        {
+            "panel" : 'Panel%20General',
+            "tabla":  'panel_general'
+        },
+        {
+            "panel" : 'CEDEARs',
+            "tabla":  'panel_cedears'
+        }
+    ]
+
+
 
     #se instancian las clases
     invOnlFetch = ApiInvertirOnline(config)
@@ -17,48 +29,55 @@ def insert_simbolos_in_db():
 
 
     #1 recuperamos el refresh token de la bd
-    querySelect = "SELECT * FROM `options` WHERE name='refresh-token'"
-    resp = db.run_query(querySelect)
-    if resp[0][2] != '':
-        refresToken = resp[0][2]
-
-    #con el refresh token hacemos el pedido (primero va a buscar el token)
-    respuesta = invOnlFetch.cicleTokenValoresOnApi(refresToken)
-
-    #si repsuesta es ok, se graba en la bd los valores y el newRefrestoken
-    if respuesta['status']['code'] == 'ok':
-            
-        data = respuesta['data']
-        
-        for simbolo in data['titulos']:
-
-            valor = (simbolo['simbolo'], simbolo['puntas']['cantidadCompra'], simbolo['puntas']['precioCompra'], simbolo['puntas']['precioVenta'], simbolo['puntas']['cantidadVenta'], simbolo['ultimoPrecio'], simbolo['variacionPorcentual'], simbolo['apertura'], simbolo['maximo'], simbolo['minimo'], simbolo['ultimoCierre'], simbolo['volumen'], simbolo['cantidadOperaciones'], simbolo['fecha'], simbolo['tipoOpcion'], simbolo['precioEjercicio'], simbolo['fechaVencimiento'], simbolo['mercado'], simbolo['moneda'])
-
-            valores.append(valor)
-
+    queryGetToken = "SELECT * FROM `options` WHERE name='refresh-token'"
     
-        queryResponse = db.insert_valores_simbolo(valores)
-        print(queryResponse)
+    
+    for x in datosFetch:
+        
+        respToken = db.run_query(queryGetToken)
+        if respToken[0][2] != '':
+            refresToken = respToken[0][2]
 
-        #guarda el refresh token
-        newRefresToken = respuesta['newrefToken']
-        if newRefresToken != '':
-            query = "UPDATE options SET value = '"+newRefresToken+"' WHERE name = 'refresh-token'"
-            db.run_query(query)
 
-            error = 'ok'
-            extraData = 'valores-recuperados'
+        respuesta = invOnlFetch.cicleTokenValoresOnApi(refresToken, x["panel"])
+
+        #si repsuesta es ok, se graba en la bd los valores y el newRefrestoken
+        if respuesta['status']['code'] == 'ok':
+            valores = []  
+            data = respuesta['data']
+           
+            for simbolo in data['titulos']:
+                
+                if ( simbolo['puntas'] != None ):
+                    valor = (simbolo['simbolo'], simbolo['puntas']['cantidadCompra'], simbolo['puntas']['precioCompra'], simbolo['puntas']['precioVenta'], simbolo['puntas']['cantidadVenta'], simbolo['ultimoPrecio'], simbolo['variacionPorcentual'], simbolo['apertura'], simbolo['maximo'], simbolo['minimo'], simbolo['ultimoCierre'], simbolo['volumen'], simbolo['cantidadOperaciones'], simbolo['fecha'], simbolo['tipoOpcion'], simbolo['precioEjercicio'], simbolo['fechaVencimiento'], simbolo['mercado'], simbolo['moneda'])
+                else :
+                    valor = (simbolo['simbolo'], 0, 0, 0, 0, simbolo['ultimoPrecio'], simbolo['variacionPorcentual'], simbolo['apertura'], simbolo['maximo'], simbolo['minimo'], simbolo['ultimoCierre'], simbolo['volumen'], simbolo['cantidadOperaciones'], simbolo['fecha'], simbolo['tipoOpcion'], simbolo['precioEjercicio'], simbolo['fechaVencimiento'], simbolo['mercado'], simbolo['moneda'])
+                
+                
+                valores.append(valor)
+    
+            queryResponse = db.insert_valores_simbolo(x["tabla"], valores)
+            print(queryResponse)
+
+            #guarda el refresh token
+            newRefresToken = respuesta['newrefToken']
+            if newRefresToken != '':
+                query = "UPDATE options SET value = '"+newRefresToken+"' WHERE name = 'refresh-token'"
+                db.run_query(query)
+
+                error = 'ok'
+                extraData = 'valores-recuperados-'+x["panel"]
+                query = "INSERT INTO `logs` (`error_code`, `extra-data` ) VALUES ('"+error+"', '"+extraData+"')"
+                db.run_query(query)
+
+        else :
+            error = 'error-'+x["panel"]
+            extraData = respuesta['status']['code']
             query = "INSERT INTO `logs` (`error_code`, `extra-data` ) VALUES ('"+error+"', '"+extraData+"')"
             db.run_query(query)
 
-    else :
-        error = 'error'
-        extraData = respuesta['status']['code']
-        query = "INSERT INTO `logs` (`error_code`, `extra-data` ) VALUES ('"+error+"', '"+extraData+"')"
-        db.run_query(query)
 
     print('ciclo terminado')
-
 
 
 # Actividad repetitiva:

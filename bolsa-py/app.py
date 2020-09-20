@@ -5,13 +5,13 @@ app = Flask(__name__)
 
 @app.route('/')
 def index():
-    return 'App Bolsa PYthon MySQL. 1Route: /update-merval'
+    return 'App Bolsa PYthon MySQL. 1Route: /update-valores'
 
-@app.route('/update-merval')
+@app.route('/update-valores')
 def updateMerbal():
-    print('updating merval, for 7 hours')
+    print('updating valores, for 7 hours')
     intervaloUpdatingMerval()
-    return 'updating Merval'
+    return 'updating valores'
 
 
 if __name__ == "__main__":

@@ -21,4 +21,5 @@ Le debería agregar otras rutas para refrescar otros valores.
 ## Documentacion
 
 * PyMysql: https://pymysql.readthedocs.io/en/latest/user/examples.html
-* schedule https://schedule.readthedocs.io/en/stable/
+* schedule: https://schedule.readthedocs.io/en/stable/
+* Pyrebase: https://github.com/thisbejim/Pyrebase

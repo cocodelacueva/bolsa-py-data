@@ -39,7 +39,7 @@ services:
         volumes:
             - ./bolsa-py:/app
         environment:
-            MINUTES_INTERVAL: 50
+            MINUTES_INTERVAL: 2
             MYSQL_HOST: db
             MYSQL_DATABASE: bolsa
             MYSQL_USER: root

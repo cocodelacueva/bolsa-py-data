@@ -133,19 +133,18 @@ class ApiInvertirOnline:
         return respuesta
 
     #funcion standard que pide las cotizaciones
-    def getCotizacionesAcciones(self, token):
+    def getCotizacionesAcciones(self, token, panel):
         
-        panel = 'Merval'
         instrumento = 'acciones'
         pais = 'argentina'
 
-        url = 'Cotizaciones/Acciones/Merval/Argentina?panelCotizacion.instrumento='+instrumento+'&panelCotizacion.panel='+panel+'&panelCotizacion.pais='+pais
+        url = 'Cotizaciones/'+instrumento+'/'+panel+'/'+pais+'?panelCotizacion.instrumento='+instrumento+'&panelCotizacion.panel='+panel+'&panelCotizacion.pais='+pais
                 
         return self.getFectchDataByGet(token, url)
 
 
     #esta funcion arma por completo el siclo que se hace cada 50 minutos, pide los token pide las cotizaciones, guarda en la bd
-    def cicleTokenValoresOnApi(self, refToken):
+    def cicleTokenValoresOnApi(self, refToken, panel):
         respuesta = {}
         respuesta['status'] = {}
         respuesta['status']['code'] = 'ok'
@@ -159,7 +158,7 @@ class ApiInvertirOnline:
             respuesta['newrefToken'] = resp1['data']['refresh_token']
             
             #va a buscar cotizaciones
-            resp2 = self.getCotizacionesAcciones(token)
+            resp2 = self.getCotizacionesAcciones(token, panel)
             if resp2['status']['code'] == 200:
                 
                 respuesta['data'] = resp2['data']
@@ -182,20 +181,20 @@ class ApiInvertirOnline:
                 respuesta['newrefToken'] = resp2['data']['refresh_token']
                 
                 #va a buscar cotizaciones
-                resp3 = self.getCotizacionesAcciones(token)
+                resp3 = self.getCotizacionesAcciones(token, panel)
                 if resp3['status']['code'] == 200:
                     
                     respuesta['data'] = resp3['data']
 
                 else : 
-                    print('falla refreshToken')
+                    print('falla get Valores')
                     
                     respuesta['status']['code'] = 'error-get-valores'
                     respuesta['status']['error'] = resp3['status']['code']
 
 
             else : 
-                print('falla refreshToken')
+                print('falla Token')
                 respuesta['status']['code'] = 'error-token'
                 respuesta['status']['error'] = resp2['status']['code']
 

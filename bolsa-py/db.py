@@ -97,6 +97,6 @@ class Database:
         return self.run_query(query)
 
     #inserta muchos valores de los simbolos a la bd
-    def insert_valores_simbolo(self, valores):
-        query = """INSERT INTO `merbal` (`simbolo`, `puntas_cantidad_compra`, `puntas_precio_compra`, `puntas_precio_venta`, `puntas_cantidad_venta`, `ultimo_precio`, `variacion_porcentual`, `apertura`, `maximo`, `minimo`, `ultimo_cierre`, `volumen`, `cantidad_operaciones`, `fecha`, `tipo_opcion`, `precio_ejercicio`, `fecha_vencimiento`, `mercado`, `moneda`) VALUES ( %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s )"""
+    def insert_valores_simbolo(self, tabla, valores):
+        query = """INSERT INTO `"""+tabla+"""` (`simbolo`, `puntas_cantidad_compra`, `puntas_precio_compra`, `puntas_precio_venta`, `puntas_cantidad_venta`, `ultimo_precio`, `variacion_porcentual`, `apertura`, `maximo`, `minimo`, `ultimo_cierre`, `volumen`, `cantidad_operaciones`, `fecha`, `tipo_opcion`, `precio_ejercicio`, `fecha_vencimiento`, `mercado`, `moneda`) VALUES ( %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s )"""
         return self.insert_many_values(query, valores)

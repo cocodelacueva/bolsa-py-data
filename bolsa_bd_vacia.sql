@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Servidor: db
--- Tiempo de generación: 18-09-2020 a las 03:08:40
+-- Tiempo de generación: 20-09-2020 a las 20:54:07
 -- Versión del servidor: 5.7.31
 -- Versión de PHP: 7.4.9
 
@@ -37,12 +37,32 @@ CREATE TABLE `logs` (
 -- --------------------------------------------------------
 
 --
--- Estructura de tabla para la tabla `merbal`
+-- Estructura de tabla para la tabla `options`
 --
 
-CREATE TABLE `merbal` (
+CREATE TABLE `options` (
+  `id` int(11) NOT NULL,
+  `name` varchar(250) NOT NULL DEFAULT '',
+  `value` text NOT NULL,
+  `extra_value` varchar(250) NOT NULL DEFAULT ''
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+
+--
+-- Volcado de datos para la tabla `options`
+--
+
+INSERT INTO `options` (`id`, `name`, `value`, `extra_value`) VALUES
+(1, 'refresh-token', '', '');
+
+-- --------------------------------------------------------
+
+--
+-- Estructura de tabla para la tabla `panel_cedears`
+--
+
+CREATE TABLE `panel_cedears` (
   `id` int(100) NOT NULL,
-  `simbolo` varchar(200) CHARACTER SET utf8 NOT NULL,
+  `simbolo` varchar(200) NOT NULL,
   `puntas_cantidad_compra` decimal(10,3) NOT NULL,
   `puntas_precio_compra` decimal(10,3) NOT NULL,
   `puntas_precio_venta` decimal(10,3) NOT NULL,
@@ -55,34 +75,44 @@ CREATE TABLE `merbal` (
   `ultimo_cierre` decimal(10,3) NOT NULL,
   `volumen` decimal(10,3) NOT NULL,
   `cantidad_operaciones` decimal(10,3) NOT NULL,
-  `fecha` varchar(256) CHARACTER SET utf8 NOT NULL,
-  `tipo_opcion` varchar(100) CHARACTER SET utf8 DEFAULT NULL,
+  `fecha` varchar(256) NOT NULL,
+  `tipo_opcion` varchar(100) DEFAULT NULL,
   `precio_ejercicio` decimal(10,3) DEFAULT NULL,
   `fecha_vencimiento` date DEFAULT NULL,
-  `mercado` varchar(100) CHARACTER SET utf8 NOT NULL,
-  `moneda` varchar(100) CHARACTER SET utf8 NOT NULL,
+  `mercado` varchar(100) NOT NULL,
+  `moneda` varchar(100) NOT NULL,
   `time_stamp` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
 -- --------------------------------------------------------
 
 --
--- Estructura de tabla para la tabla `options`
+-- Estructura de tabla para la tabla `panel_general`
 --
 
-CREATE TABLE `options` (
-  `id` int(11) NOT NULL,
-  `name` varchar(250) CHARACTER SET utf8 NOT NULL DEFAULT '',
-  `value` text CHARACTER SET utf8 NOT NULL,
-  `extra_value` varchar(250) CHARACTER SET utf8 NOT NULL DEFAULT ''
+CREATE TABLE `panel_general` (
+  `id` int(100) NOT NULL,
+  `simbolo` varchar(200) NOT NULL,
+  `puntas_cantidad_compra` decimal(10,3) NOT NULL,
+  `puntas_precio_compra` decimal(10,3) NOT NULL,
+  `puntas_precio_venta` decimal(10,3) NOT NULL,
+  `puntas_cantidad_venta` decimal(10,3) NOT NULL,
+  `ultimo_precio` decimal(10,3) NOT NULL,
+  `variacion_porcentual` decimal(6,2) NOT NULL,
+  `apertura` decimal(10,3) NOT NULL,
+  `maximo` decimal(10,3) NOT NULL,
+  `minimo` decimal(10,3) NOT NULL,
+  `ultimo_cierre` decimal(10,3) NOT NULL,
+  `volumen` decimal(10,3) NOT NULL,
+  `cantidad_operaciones` decimal(10,3) NOT NULL,
+  `fecha` varchar(256) NOT NULL,
+  `tipo_opcion` varchar(100) DEFAULT NULL,
+  `precio_ejercicio` decimal(10,3) DEFAULT NULL,
+  `fecha_vencimiento` date DEFAULT NULL,
+  `mercado` varchar(100) NOT NULL,
+  `moneda` varchar(100) NOT NULL,
+  `time_stamp` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
-
---
--- Volcado de datos para la tabla `options`
---
-
-INSERT INTO `options` (`id`, `name`, `value`, `extra_value`) VALUES
-(1, 'refresh-token', '', '');
 
 --
 -- Índices para tablas volcadas
@@ -95,15 +125,21 @@ ALTER TABLE `logs`
   ADD PRIMARY KEY (`id`);
 
 --
--- Indices de la tabla `merbal`
---
-ALTER TABLE `merbal`
-  ADD PRIMARY KEY (`id`);
-
---
 -- Indices de la tabla `options`
 --
 ALTER TABLE `options`
+  ADD PRIMARY KEY (`id`);
+
+--
+-- Indices de la tabla `panel_cedears`
+--
+ALTER TABLE `panel_cedears`
+  ADD PRIMARY KEY (`id`);
+
+--
+-- Indices de la tabla `panel_general`
+--
+ALTER TABLE `panel_general`
   ADD PRIMARY KEY (`id`);
 
 --
@@ -114,19 +150,25 @@ ALTER TABLE `options`
 -- AUTO_INCREMENT de la tabla `logs`
 --
 ALTER TABLE `logs`
-  MODIFY `id` int(10) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=3;
-
---
--- AUTO_INCREMENT de la tabla `merbal`
---
-ALTER TABLE `merbal`
-  MODIFY `id` int(100) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=81;
+  MODIFY `id` int(10) NOT NULL AUTO_INCREMENT;
 
 --
 -- AUTO_INCREMENT de la tabla `options`
 --
 ALTER TABLE `options`
   MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=2;
+
+--
+-- AUTO_INCREMENT de la tabla `panel_cedears`
+--
+ALTER TABLE `panel_cedears`
+  MODIFY `id` int(100) NOT NULL AUTO_INCREMENT;
+
+--
+-- AUTO_INCREMENT de la tabla `panel_general`
+--
+ALTER TABLE `panel_general`
+  MODIFY `id` int(100) NOT NULL AUTO_INCREMENT;
 COMMIT;
 
 /*!40101 SET CHARACTER_SET_CLIENT=@OLD_CHARACTER_SET_CLIENT */;
