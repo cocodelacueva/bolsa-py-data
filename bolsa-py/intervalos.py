@@ -84,7 +84,7 @@ def insert_simbolos_in_db():
 def intervaloUpdatingMerval():
 
     # Timeout es para que se detenga luego de 8 horas (60 segudos multiplicado por 60 MINUTOS MULTIPLICADO POR 8)
-    timeout = time.time() + 60*60*7
+    timeout = time.time() + 60*60*8
 
     schedule.every(config.minutesInterval).minutes.do(insert_simbolos_in_db)
 
