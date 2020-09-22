@@ -2,3 +2,4 @@ PyMySQL
 loguru
 schedule
 Flask
+firebase_admin

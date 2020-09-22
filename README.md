@@ -23,3 +23,6 @@ Le debería agregar otras rutas para refrescar otros valores.
 * PyMysql: https://pymysql.readthedocs.io/en/latest/user/examples.html
 * schedule: https://schedule.readthedocs.io/en/stable/
 * Pyrebase: https://github.com/thisbejim/Pyrebase
+* Firebase: https://console.firebase.google.com/
+* Firebase Admin server: (credentials json) https://firebase.google.com/docs/admin/setup#python
+* Firebase para humanos: https://medium.com/faun/getting-started-with-firebase-cloud-firestore-using-python-c6ab3f5ecae0
