@@ -4,18 +4,18 @@ basedir = path.abspath(path.dirname(__file__))
 
 credentialsFirebase = path.join(basedir, "credentialsFirebase.json")
 
-# minutesInterval = int(environ.get('MINUTES_INTERVAL'))
+minutesInterval = int(environ.get('MINUTES_INTERVAL'))
 
 # Database config
-# db_user = environ.get('MYSQL_USER')
-# db_password = environ.get('MYSQL_PASSWORD')
-# db_host = environ.get('MYSQL_HOST')
-# db_port = int(environ.get('MYSQL_PORT'))
-# db_name = environ.get('MYSQL_DATABASE')
-# apiUser = environ.get('API_USER')
-# apiPw = environ.get('API_PW')
-# urlApilBase = environ.get('API_URL_BASE')
-# urlApiToken = environ.get('API_URL_TOKEN')
+db_user = environ.get('MYSQL_USER')
+db_password = environ.get('MYSQL_PASSWORD')
+db_host = environ.get('MYSQL_HOST')
+db_port = int(environ.get('MYSQL_PORT'))
+db_name = environ.get('MYSQL_DATABASE')
+apiUser = environ.get('API_USER')
+apiPw = environ.get('API_PW')
+urlApilBase = environ.get('API_URL_BASE')
+urlApiToken = environ.get('API_URL_TOKEN')
 
 # minutesInterval = 1
 # db_user = 'user'
