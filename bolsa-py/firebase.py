@@ -1,28 +1,45 @@
-## archivo de testing para firebase y firecloud
-# funciona con firebase_admin que permite autorizar al servidor administrar firebase y sus apps como si fuera un usuario pero como super admin
-# viene bien para este tipo de proyectos
-# las credenciales estan en un archivo json, se realiza desde la consola de google firebase (ver readme)
-
-from config import credentialsFirebase
+## clase firebase con para crear y administrar los datos
 import firebase_admin
 from firebase_admin import credentials, firestore
 
-# inicializa las credenciales
-cred = credentials.Certificate( credentialsFirebase )
-defaultApp = firebase_admin.initialize_app(cred)
+class Firestore:
+    """Database connection class."""
 
-# inicializa firestore que vamos a utilizar ahora
-db = firestore.client()
+    def __init__(self, config):
+        self.credentialsFirebase = config.credentialsFirebase
+    
+    # inicializa las credenciales
+    def initCredentials(self):
+        """Connect to MySQL Database."""
+        # inicializa las credenciales
+        cred = credentials.Certificate( self.credentialsFirebase )
+        defaultApp = firebase_admin.initialize_app(cred)
 
-##agregar data
-nuevousuario = {
-    'uid': 'fdsafd', 'email': 'miemail@gmail.com'
-}
+        # inicializa firestore que vamos a utilizar ahora
+        db = firestore.client()
+        return db
 
-db.collection(u'usuarios').add(nuevousuario)
+    ##agregar data
+    def addDoc(self, doc, collection):
 
-## leer data
-users = list(db.collection(u'usuarios').get())
+        db = self.initCredentials()
 
-for user in users:
-    print(user.to_dict())
+        #data, ejemplo
+        # nuevousuario = {
+        #     'uid': 'fdsafd', 'email': 'miemail@gmail.com'
+        # }
+
+        resp = db.collection(collection).add(doc)
+        return resp
+
+    ## leer data
+    def getCollectionAll(self, collection):
+        db = self.initCredentials()
+
+        collection = list(db.collection(collection).get())
+        valores = []
+
+        for doc in collection:
+            valores.append(doc.to_dict())
+
+        return valores

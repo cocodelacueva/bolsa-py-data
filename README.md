@@ -26,3 +26,4 @@ Le debería agregar otras rutas para refrescar otros valores.
 * Firebase: https://console.firebase.google.com/
 * Firebase Admin server: (credentials json) https://firebase.google.com/docs/admin/setup#python
 * Firebase para humanos: https://medium.com/faun/getting-started-with-firebase-cloud-firestore-using-python-c6ab3f5ecae0
+* Firestore example data python: https://github.com/GoogleCloudPlatform/python-docs-samples/blob/cc1f10a38b4c0a37a87039fa4e9a7fd84b090e8b/firestore/cloud-client/snippets.py#L282-L282
