@@ -7,13 +7,12 @@ class Firestore:
 
     def __init__(self, config):
         self.credentialsFirebase = config.credentialsFirebase
-    
+        self.initialize = False
+        self.cred = credentials.Certificate( self.credentialsFirebase )
+        self.defaultApp = firebase_admin.initialize_app(self.cred)
+
     # inicializa las credenciales
     def initCredentials(self):
-        """Connect to MySQL Database."""
-        # inicializa las credenciales
-        cred = credentials.Certificate( self.credentialsFirebase )
-        defaultApp = firebase_admin.initialize_app(cred)
 
         # inicializa firestore que vamos a utilizar ahora
         db = firestore.client()
@@ -21,7 +20,7 @@ class Firestore:
 
     ##agregar data
     def addDoc(self, doc, collection):
-
+        
         db = self.initCredentials()
 
         #data, ejemplo
@@ -36,7 +35,7 @@ class Firestore:
     def getCollectionAll(self, collection):
         db = self.initCredentials()
 
-        collection = list(db.collection(collection).get())
+        collection = list( db.collection(collection).get())
         valores = []
 
         for doc in collection:

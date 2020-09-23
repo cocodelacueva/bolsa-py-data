@@ -21,6 +21,7 @@ Le debería agregar otras rutas para refrescar otros valores.
 ## Documentacion
 
 * PyMysql: https://pymysql.readthedocs.io/en/latest/user/examples.html
+* PyMysql no oficial: http://zetcode.com/python/pymysql/#:~:text=PyMySQL%20fetchAll,as%20a%20sequence%20of%20sequences.&text=In%20the%20example%2C%20we%20retrieve%20all%20cities%20from%20the%20database%20table.&text=This%20SQL%20statement%20selects%20all%20data%20from%20the%20cities%20table.&text=The%20fetchall%20function%20gets%20all%20records.
 * schedule: https://schedule.readthedocs.io/en/stable/
 * Pyrebase: https://github.com/thisbejim/Pyrebase
 * Firebase: https://console.firebase.google.com/

@@ -1,6 +1,7 @@
 import sys
 import pymysql
 from loguru import logger
+import pymysql.cursors
 
 class Database:
     """Database connection class."""
@@ -25,7 +26,8 @@ class Database:
                     passwd=self.password,
                     db=self.dbname,
                     port=self.port,
-                    connect_timeout=5
+                    connect_timeout=5,
+                    cursorclass=pymysql.cursors.DictCursor
                 )
         except pymysql.MySQLError as e:
             logger.error(e)
