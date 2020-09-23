@@ -35,8 +35,8 @@ def insert_simbolos_in_db():
     for x in datosFetch:
         
         respToken = db.run_query(queryGetToken)
-        if respToken[0][2] != '':
-            refresToken = respToken[0][2]
+        if respToken[0]['value'] != '':
+            refresToken = respToken[0]['value']
 
 
         respuesta = invOnlFetch.cicleTokenValoresOnApi(refresToken, x["panel"])

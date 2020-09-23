@@ -64,4 +64,3 @@ def getDataFromDBinsertinFirebase(paneles, dia):
 
         saveFS = fb.addDoc(newdoc, panel['firestore'])
         print(saveFS)
-

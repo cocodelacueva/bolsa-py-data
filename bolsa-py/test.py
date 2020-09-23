@@ -6,9 +6,9 @@ import firebase_admin
 from firebase_admin import credentials, firestore
 
 def delete_full_collection(config):
-    
+    print(config.credentialsFirebase)
     cred = credentials.Certificate( config.credentialsFirebase )
-    d = firebase_admin.initialize_app(cred)
+    defaultApp = firebase_admin.initialize_app(cred)
     db = firestore.Client()
 
     # [START delete_full_collection]

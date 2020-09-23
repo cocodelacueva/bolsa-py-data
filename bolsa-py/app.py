@@ -1,12 +1,32 @@
 from flask import Flask
 from intervalos import intervaloUpdatingMerval
-from dataprocess import getDataFromDBinsertinFirebase
+from dataprocess import getDataFromDBinsertinFirebase, deleteFirebase
 
 app = Flask(__name__)
 
 @app.route('/')
 def index():
-    return 'App Bolsa PYthon MySQL. 1Route: /update-valores || /update-firebase'
+    return """
+    <h1>'App Bolsa PYthon MySQL!</h1>
+    <h3>Routes:</h3>
+    <ul>
+        <li>
+            <a href="/update-valores">
+                /update-valores: from Api invertir online to mysql
+            </a>
+        </li>
+        <li>
+            <a href="/update-firebase">
+                /update-firebase: from mysql to firebase
+            </a>
+        </li>
+        <li>
+            <a href="http://localhost:8888">
+                ver phpmyadmin
+            </a>
+        </li>
+    </ul>
+    """
 
 @app.route('/update-valores')
 def updateMerbal():
@@ -35,9 +55,6 @@ def updateFirebase():
 
     getDataFromDBinsertinFirebase(paneles, dia)
     return 'firestore updated'
-
-
-
 
 
 if __name__ == "__main__":
