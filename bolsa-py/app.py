@@ -1,6 +1,6 @@
 from flask import Flask
 from intervalos import intervaloUpdatingMerval
-from dataprocess import getDataFromDBinsertinFirebase, deleteFirebase
+from dataprocess import getDataFromDBinsertinFirebase
 
 app = Flask(__name__)
 
@@ -21,7 +21,7 @@ def index():
             </a>
         </li>
         <li>
-            <a href="http://localhost:8888">
+            <a href="http://192.168.0.160:8888/" target="_blank">
                 ver phpmyadmin
             </a>
         </li>
