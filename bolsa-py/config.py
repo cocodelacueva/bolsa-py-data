@@ -17,13 +17,14 @@ apiPw = environ.get('API_PW')
 urlApilBase = environ.get('API_URL_BASE')
 urlApiToken = environ.get('API_URL_TOKEN')
 
+
 # minutesInterval = 1
 # db_user = 'user'
 # db_password = '123'
 # db_host = 'localhost'
 # db_port = 3320
 # db_name = 'bolsa'
-# apiUser = 'cocodelacueva'
-# apiPw = 'EmiliaIsabela44'
+# apiUser = ''
+# apiPw = ''
 # urlApilBase = 'https://api.invertironline.com/api/v2/'
 # urlApiToken = 'https://api.invertironline.com/token'
