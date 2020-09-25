@@ -6,7 +6,7 @@ from db import Database
 from fetch import ApiInvertirOnline
 
 
-def insert_simbolos_in_db():
+def insertSimbolosInDB():
 
     # VARIABLES VASICAS
     refresToken = False #refresh token por defecto en falso

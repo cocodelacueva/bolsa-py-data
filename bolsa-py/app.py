@@ -1,5 +1,5 @@
 from flask import Flask
-from intervalos import intervaloUpdatingMerval
+from intervalos import insertSimbolosInDB
 from dataprocess import getDataFromDBinsertinFirebase
 
 app = Flask(__name__)
@@ -30,8 +30,8 @@ def index():
 
 @app.route('/update-valores')
 def updateMerbal():
-    print('updating valores, for 7 hours')
-    intervaloUpdatingMerval()
+    print('updating valores, every hour')
+    insertSimbolosInDB()
     return 'updating valores'
 
 
