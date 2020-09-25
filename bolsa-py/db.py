@@ -70,8 +70,7 @@ class Database:
     #insert valores 
     def insert_many_values(self, query, values):
         """inser in SQL."""
-        print(values)
-        print(query)
+        
         try:
             self.open_connection()
             with self.conn.cursor() as cur:
