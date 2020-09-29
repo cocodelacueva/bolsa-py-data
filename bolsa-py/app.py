@@ -1,6 +1,6 @@
 from flask import Flask
 from intervalos import insertSimbolosInDB
-from dataprocess import getDataFromDBinsertinFirebase
+from dataprocess import insertLastSimbolsValuesInFirebase, getSimbolosNames
 
 app = Flask(__name__)
 
@@ -25,6 +25,11 @@ def index():
                 ver phpmyadmin
             </a>
         </li>
+        <li>
+            <a href="/update-simbols-option" target="_blank">
+                Actualiza el numbero de simbolos que sirve para actualizar firebase
+            </a>
+        </li>
     </ul>
     """
 
@@ -37,9 +42,15 @@ def updateMerbal():
 
 @app.route('/update-firebase')
 def updateFirebase():
-    print('updating firestore, from or local mysqls')
-    getDataFromDBinsertinFirebase()
+    print('updating firestore, from or last records in local mysqls')
+    insertLastSimbolsValuesInFirebase()
     return 'firestore updated'
+
+@app.route('/update-simbols-option')
+def updateSimbolsNumbersByPanel():
+    print('updating options simbols to know hoy many simbols are in any panel')
+    getSimbolosNames()
+    return 'simbols updated'
 
 
 if __name__ == "__main__":

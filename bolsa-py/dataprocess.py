@@ -6,7 +6,7 @@ from firebase import Firestore
 
 
 #selecciona las acciones del dia anterior, o del actual de acuerdo al prev pasado
-def select1DayBefore(tablaMySQL):
+def selectValuesToday(tablaMySQL):
 
     #instanciamos bases de datos
     db = Database(config)
@@ -17,26 +17,26 @@ def select1DayBefore(tablaMySQL):
     
     return titulos
 
-def selectLast(tablaMySQL):
+def selectLastValues(tablaMySQL, limit):
 
     #instanciamos bases de datos
     db = Database(config)
         
-    queryGetTitulos = "SELECT * FROM `"+str(tablaMySQL)+"` WHERE date(time_stamp)=CURDATE()"
+    queryGetTitulos = "SELECT * FROM `"+str(tablaMySQL)+""
     
     titulos = db.run_query(queryGetTitulos)
     
     return titulos
 
 #recorre las distintas bases de datos locales para insertarlo en las distintas colecciones en firestore
-def getDataFromDBinsertinFirebase(paneles):
-
+def insertLastSimbolsValuesInFirebase():
+    paneles = config.paneles
     fb = Firestore(config)
 
     for panel in paneles:
 
 
-        titulos = selectLast(panel['mysql'])
+        titulos = selectLastValues(panel['mysql'], panel['default_limit'])
 
         newdoc = {
             "name_panel" : panel['name'],
@@ -74,3 +74,38 @@ def getDataFromDBinsertinFirebase(paneles):
 
         saveFS = fb.addDoc(newdoc, panel['firestore'])
         print(saveFS)
+
+
+
+#actualiza el string de simbolos que sirve para actualizar firebase: insertLastSimbolsValuesInFirebase()
+def getSimbolosNames():
+    paneles = config.paneles
+    db = Database(config)
+
+    for panel in paneles:
+        
+        query = "SELECT * FROM `"+str(panel['mysql'])+"` LIMIT " + str(panel['default_limit'])
+        
+        titulos = db.run_query(query)
+        simbolos = []
+
+        for titulo in titulos:
+            if titulo['simbolo'] not in simbolos:
+                simbolos.append(titulo['simbolo'])
+            
+
+        simbolos = '/'.join(simbolos)
+
+        #1 recuperamos los simbols en caso de que haya alguno
+        queryGetSimbols = "SELECT * FROM `options` WHERE name='"+str(panel['mysql'])+"'"
+        resp = db.run_query(queryGetSimbols)
+        
+        if resp is None:
+            query = "UPDATE options SET value = '"+simbolos+"' WHERE name ='"+str(panel['mysql'])+"'"
+        else:
+            query = "INSERT INTO `options` (`name`, `value` ) VALUES ('"+str(panel['mysql'])+"', '"+simbolos+"')"
+        
+        mysqlResp = db.run_query(query)
+
+        print(mysqlResp)
+

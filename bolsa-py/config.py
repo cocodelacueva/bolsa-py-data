@@ -4,17 +4,20 @@ basedir = path.abspath(path.dirname(__file__))
 credentialsFirebase = path.join(basedir, "credentialsFirebase.json")
 minutesInterval = 50
 
-#tabla bases de datos: mysql y firebase
+# paneles es cada instancia de valores, por ejemplo, acciones, cedears, merbal, merbal25, etc
+# estos valores son tanto en mysql como firebase
 paneles = [
     {
         "mysql" : 'panel_general',
         "firestore":  'panel_general',
-        "name" : "Panel General"
+        "name" : "Panel General",
+        "default_limit": 250,
     },
     {
         "mysql" : 'panel_cedears',
         "firestore":  'panel_cedears',
-        "name" : "CEDEARs"
+        "name" : "CEDEARs",
+        "default_limit": 800,
     }
 ]
 
