@@ -6,27 +6,37 @@ from firebase import Firestore
 
 
 #selecciona las acciones del dia anterior, o del actual de acuerdo al prev pasado
-def select1DayBefore(tablaMySQL, prev='0'):
+def select1DayBefore(tablaMySQL):
 
     #instanciamos bases de datos
     db = Database(config)
         
-    queryGetTitulos = "SELECT * FROM `"+str(tablaMySQL)+"` WHERE date(time_stamp)=(CURDATE()-"+str(prev)+")"
+    queryGetTitulos = "SELECT * FROM `"+str(tablaMySQL)+"` WHERE date(time_stamp)=CURDATE()"
     
     titulos = db.run_query(queryGetTitulos)
     
     return titulos
 
+def selectLast(tablaMySQL):
+
+    #instanciamos bases de datos
+    db = Database(config)
+        
+    queryGetTitulos = "SELECT * FROM `"+str(tablaMySQL)+"` WHERE date(time_stamp)=CURDATE()"
+    
+    titulos = db.run_query(queryGetTitulos)
+    
+    return titulos
 
 #recorre las distintas bases de datos locales para insertarlo en las distintas colecciones en firestore
-def getDataFromDBinsertinFirebase(paneles, dia):
+def getDataFromDBinsertinFirebase(paneles):
 
     fb = Firestore(config)
 
     for panel in paneles:
 
 
-        titulos = select1DayBefore(panel['mysql'],dia)
+        titulos = selectLast(panel['mysql'])
 
         newdoc = {
             "name_panel" : panel['name'],

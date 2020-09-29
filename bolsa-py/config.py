@@ -1,24 +1,39 @@
 from os import environ, path
 
 basedir = path.abspath(path.dirname(__file__))
-
 credentialsFirebase = path.join(basedir, "credentialsFirebase.json")
+minutesInterval = 50
 
-minutesInterval = int(environ.get('MINUTES_INTERVAL'))
+#tabla bases de datos: mysql y firebase
+paneles = [
+    {
+        "mysql" : 'panel_general',
+        "firestore":  'panel_general',
+        "name" : "Panel General"
+    },
+    {
+        "mysql" : 'panel_cedears',
+        "firestore":  'panel_cedears',
+        "name" : "CEDEARs"
+    }
+]
 
-# Database config
+
+# MYSQL Database config
 db_user = environ.get('MYSQL_USER')
 db_password = environ.get('MYSQL_PASSWORD')
 db_host = environ.get('MYSQL_HOST')
 db_port = int(environ.get('MYSQL_PORT'))
 db_name = environ.get('MYSQL_DATABASE')
+
+# API INVERTIR ONLINE CONFIG
 apiUser = environ.get('API_USER')
 apiPw = environ.get('API_PW')
-urlApilBase = environ.get('API_URL_BASE')
-urlApiToken = environ.get('API_URL_TOKEN')
+urlApilBase = 'https://api.invertironline.com/api/v2/'
+urlApiToken = 'https://api.invertironline.com/token'
 
 
-# minutesInterval = 1
+# DEVELOP VARS DOCKER-COMPOSE FILE
 # db_user = 'user'
 # db_password = '123'
 # db_host = 'localhost'
@@ -26,5 +41,3 @@ urlApiToken = environ.get('API_URL_TOKEN')
 # db_name = 'bolsa'
 # apiUser = ''
 # apiPw = ''
-# urlApilBase = 'https://api.invertironline.com/api/v2/'
-# urlApiToken = 'https://api.invertironline.com/token'

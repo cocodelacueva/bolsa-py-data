@@ -39,7 +39,6 @@ services:
         volumes:
             - ./bolsa-py:/app
         environment:
-            MINUTES_INTERVAL: 50
             MYSQL_HOST: db
             MYSQL_DATABASE: bolsa
             MYSQL_USER: root
@@ -47,8 +46,5 @@ services:
             MYSQL_PORT: 3306
             API_USER: 
             API_PW: 
-            API_URL_BASE: https://api.invertironline.com/api/v2/
-            API_URL_TOKEN: https://api.invertironline.com/token
-        
 volumes:    
     volume-db:       

@@ -38,22 +38,7 @@ def updateMerbal():
 @app.route('/update-firebase')
 def updateFirebase():
     print('updating firestore, from or local mysqls')
-    
-    paneles = [
-            {
-                "mysql" : 'panel_general',
-                "firestore":  'panel_general',
-                "name" : "Panel General"
-            },
-            {
-                "mysql" : 'panel_cedears',
-                "firestore":  'panel_cedears',
-                "name" : "CEDEARs"
-            }
-        ]
-    dia = "2"#cuantos dias para atras busca
-
-    getDataFromDBinsertinFirebase(paneles, dia)
+    getDataFromDBinsertinFirebase()
     return 'firestore updated'
 
 
