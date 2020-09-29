@@ -31,3 +31,4 @@ Le debería agregar otras rutas para refrescar otros valores.
 
 
 select mysql hoy: SELECT * FROM `panel_general` WHERE date(time_stamp)=CURDATE()
+docker exec -i mysql-container mysql -uuser -p123 bolsa < data.sql

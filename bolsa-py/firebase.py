@@ -7,21 +7,26 @@ class Firestore:
 
     def __init__(self, config):
         self.credentialsFirebase = config.credentialsFirebase
-        self.initialize = False
-        self.cred = credentials.Certificate( self.credentialsFirebase )
-        self.defaultApp = firebase_admin.initialize_app(self.cred)
+        
 
     # inicializa las credenciales
     def initCredentials(self):
 
         # inicializa firestore que vamos a utilizar ahora
+        cred = credentials.Certificate( self.credentialsFirebase )
+        defaultApp = firebase_admin.initialize_app(cred)
+
         db = firestore.client()
         return db
 
     ##agregar data
     def addDoc(self, doc, collection):
-        
-        db = self.initCredentials()
+        if firebase_admin._DEFAULT_APP_NAME in firebase_admin._apps:
+            print('firebase ya inicializada')
+            app = firebase_admin.get_app()
+            db = firestore.client()
+        else:
+            db = self.initCredentials()
 
         #data, ejemplo
         # nuevousuario = {
