@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Servidor: db
--- Tiempo de generación: 20-09-2020 a las 20:54:07
+-- Tiempo de generación: 01-10-2020 a las 01:39:02
 -- Versión del servidor: 5.7.31
 -- Versión de PHP: 7.4.9
 
@@ -52,7 +52,9 @@ CREATE TABLE `options` (
 --
 
 INSERT INTO `options` (`id`, `name`, `value`, `extra_value`) VALUES
-(1, 'refresh-token', '', '');
+(1, 'refresh-token', '', ''),
+(2, 'simbolos_panel_general', '', ''),
+(3, 'simbolos_panel_cedears', '', '');
 
 -- --------------------------------------------------------
 
@@ -156,7 +158,7 @@ ALTER TABLE `logs`
 -- AUTO_INCREMENT de la tabla `options`
 --
 ALTER TABLE `options`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=2;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=9;
 
 --
 -- AUTO_INCREMENT de la tabla `panel_cedears`

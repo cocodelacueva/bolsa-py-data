@@ -54,9 +54,9 @@ def insertLastSimbolsValuesInFirebase():
     for panel in paneles:
 
         #primero toma los simbolos
-        queryGetSimbols = "SELECT * FROM `options` WHERE name='"+str(panel['mysql'])+"'"
+        queryGetSimbols = "SELECT * FROM `options` WHERE name='simbolos_"+str(panel['mysql'])+"'"
         simbolos = db.run_query(queryGetSimbols)
-
+        
         if simbolos is None:
             getSimbolosNames()
             return
@@ -142,14 +142,7 @@ def getSimbolosNames():
         simbolos = '/'.join(simbolos)
         fecha = time.strftime('%Y-%m-%d')
 
-        #1 recuperamos los simbols en caso de que haya alguno
-        queryGetSimbols = "SELECT * FROM `options` WHERE name='"+str(panel['mysql'])+"'"
-        resp = db.run_query(queryGetSimbols)
-        
-        if resp is None:
-            query = "UPDATE options SET value = '"+simbolos+"', extra_value='"+fecha+"' WHERE name ='"+str(panel['mysql'])+"'"
-        else:
-            query = "INSERT INTO `options` (`name`, `value`, `extra_value`) VALUES ('"+str(panel['mysql'])+"', '"+simbolos+"', '"+fecha+"')"
+        query = "UPDATE options SET value = '"+simbolos+"', extra_value='"+fecha+"' WHERE name ='simbolos_"+str(panel['mysql'])+"'"
         
         mysqlResp = db.run_query(query)
 
