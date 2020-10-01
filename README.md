@@ -18,6 +18,11 @@ Armado en python, por ahora es un codigo fuera del contenedor. Su función es ll
 Las rutas son para setear un cron desde afuera, cada ruta es una funcion, por ejemplo update-merval, ejecuta la funcion cada 50 segundos del chequeo de los valores
 Le debería agregar otras rutas para refrescar otros valores.
 
+## Cron
+Me diante cron se ejecutan las distintas actualizaciones:  
+* Desde las 10:30 hasta las 17:30, se actualizan los valores cada una hora y se guardan en la mysql local.
+* A las 12:00 y a las 18 se actualiza firebase
+
 ## Documentacion
 
 * PyMysql: https://pymysql.readthedocs.io/en/latest/user/examples.html
@@ -28,7 +33,7 @@ Le debería agregar otras rutas para refrescar otros valores.
 * Firebase Admin server: (credentials json) https://firebase.google.com/docs/admin/setup#python
 * Firebase para humanos: https://medium.com/faun/getting-started-with-firebase-cloud-firestore-using-python-c6ab3f5ecae0
 * Firestore example data python: https://github.com/GoogleCloudPlatform/python-docs-samples/blob/cc1f10a38b4c0a37a87039fa4e9a7fd84b090e8b/firestore/cloud-client/snippets.py#L282-L282
-
+* crontab guru: https://crontab.guru/#1_10_*_*_1-5
 
 select mysql hoy: SELECT * FROM `panel_general` WHERE date(time_stamp)=CURDATE()
 docker exec -i mysql-container mysql -uuser -p123 bolsa < data.sql
