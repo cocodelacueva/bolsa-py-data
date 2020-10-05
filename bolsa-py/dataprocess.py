@@ -31,12 +31,15 @@ def selectLastValues(tablaMySQL, limit):
 
 
 #selecciona las acciones del dia anterior, o del actual de acuerdo al prev pasado
-def selectTituloBySimbolInPanel(tablaMySQL, simbol, limit=None):
+def selectTituloBySimbolInPanel(tablaMySQL, simbol, orden=None, limit=None):
 
     #instanciamos bases de datos
     db = Database(config)
         
     query = "SELECT * FROM `"+str(tablaMySQL)+"` WHERE simbolo='"+simbol+"'"
+
+    if orden != None:
+        query += " " + str(orden)
 
     if limit != None:
         query += " LIMIT " + str(limit)
@@ -74,7 +77,7 @@ def insertLastSimbolsValuesInFirebase():
 
         #recorre cada simbolo para buscar su valor
         for simbolo in simbolos:
-            titulos = selectTituloBySimbolInPanel(panel['mysql'], simbolo, 2)
+            titulos = selectTituloBySimbolInPanel(panel['mysql'], simbolo, 'ORDER BY time_stamp DESC', 2)
             diferencia = titulos[1]['ultimo_precio'] - titulos[0]['ultimo_precio']
             if diferencia > 0:
                 tendencia = "sube"

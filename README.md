@@ -23,6 +23,16 @@ Me diante cron se ejecutan las distintas actualizaciones:
 * Desde las 10:30 hasta las 17:30, se actualizan los valores cada una hora y se guardan en la mysql local.
 * A las 12:00 y a las 18 se actualiza firebase
 
+Para agregar un cron hay que editar crontab -e y se abre el editor, allí hay que agregar tres lineas por ahora:
+
+30 10-17 * * 1-5 wget -q -O /dev/null "http://localhost:5000/update-valores" > /dev/null 2>&1  
+1 12 * * 1-5 wget -q -O /dev/null "http://localhost:5000/update-firebase" > /dev/null 2>&1  
+1 18 * * 1-5 wget -q -O /dev/null "http://localhost:5000/update-firebase" > /dev/null 2>&1  
+
+
+
+
+
 ## Documentacion
 
 * PyMysql: https://pymysql.readthedocs.io/en/latest/user/examples.html
