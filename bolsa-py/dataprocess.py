@@ -3,6 +3,7 @@ import config
 import time 
 from db import Database
 from firebase import Firestore
+import decimal
 
 
 #selecciona las acciones del dia anterior, o del actual de acuerdo al prev pasado
@@ -77,16 +78,30 @@ def insertLastSimbolsValuesInFirebase():
 
         #recorre cada simbolo para buscar su valor
         for simbolo in simbolos:
-            titulos = selectTituloBySimbolInPanel(panel['mysql'], simbolo, 'ORDER BY time_stamp DESC', 2)
-            diferencia = titulos[1]['ultimo_precio'] - titulos[0]['ultimo_precio']
+            titulos = selectTituloBySimbolInPanel(panel['mysql'], simbolo, 'ORDER BY time_stamp DESC', 1)
+            titulo = titulos[0]
+
+            #calculamos la variacion y la tendencia:
+
+            diferencia = titulo['ultimo_precio'] - titulo['ultimo_cierre']
+            
             if diferencia > 0:
                 tendencia = "sube"
+                dif = decimal.Decimal( ( (( titulo['ultimo_precio'] - titulo['ultimo_cierre'] ) / titulo['ultimo_cierre']) * 100) )
+                s = '{:0.2f}'.format(dif)
+                variacionDiaria = str( s + '%')
+
             elif diferencia < 0:
                 tendencia = "baja"
+                dif = decimal.Decimal( (( titulo['ultimo_cierre'] - titulo['ultimo_precio'] ) / titulo['ultimo_precio']) * 100)
+                s = '{:0.2f}'.format(dif)
+                variacionDiaria = str('-' + s + '%')
+
             else:
                 tendencia = "estable"
+                variacionDiaria = str('0%')
 
-            titulo = titulos[1]
+            titulo['ultimo_cierre']
 
             newTitulo = {
                 "simbolo": titulo['simbolo'],
@@ -110,7 +125,8 @@ def insertLastSimbolsValuesInFirebase():
                 "precioEjercicio" : str( titulo['precio_ejercicio'] ),
                 "fechaVencimiento" : titulo['fecha_vencimiento'],
                 "mercado" : titulo['mercado'],
-                "moneda" : titulo['moneda']
+                "moneda" : titulo['moneda'],
+                "variacionDiaria": variacionDiaria,
             }
 
             newdoc["titulos"].append(newTitulo)
