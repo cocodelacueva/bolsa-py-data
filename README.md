@@ -29,7 +29,7 @@ Para agregar un cron hay que editar crontab -e y se abre el editor, allí hay qu
 
 30 10-17 * * 1-5 wget -q -O /dev/null "http://localhost:5000/update-valores" > /dev/null 2>&1  
 1 12 * * 1-5 wget -q -O /dev/null "http://localhost:5000/update-firebase" > /dev/null 2>&1  
-1 18 * * 1-5 wget -q -O /dev/null "http://localhost:5000/update-firebase" > /dev/null 2>&1  
+30 15 * * 1-5 wget -q -O /dev/null "http://localhost:5000/update-dolars" > /dev/null 2>&1  
 
 
 
