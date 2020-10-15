@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Servidor: db
--- Tiempo de generación: 01-10-2020 a las 01:39:02
+-- Tiempo de generación: 15-10-2020 a las 02:26:12
 -- Versión del servidor: 5.7.31
 -- Versión de PHP: 7.4.9
 
@@ -20,6 +20,21 @@ SET time_zone = "+00:00";
 --
 -- Base de datos: `bolsa`
 --
+
+-- --------------------------------------------------------
+
+--
+-- Estructura de tabla para la tabla `cotizacion_dolares`
+--
+
+CREATE TABLE `cotizacion_dolares` (
+  `id` int(10) NOT NULL,
+  `nombre` varchar(250) NOT NULL DEFAULT '',
+  `slug` varchar(250) NOT NULL DEFAULT '',
+  `compra` decimal(10,3) DEFAULT NULL,
+  `venta` decimal(10,3) DEFAULT NULL,
+  `timestamp` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
 -- --------------------------------------------------------
 
@@ -46,15 +61,6 @@ CREATE TABLE `options` (
   `value` text NOT NULL,
   `extra_value` varchar(250) NOT NULL DEFAULT ''
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
-
---
--- Volcado de datos para la tabla `options`
---
-
-INSERT INTO `options` (`id`, `name`, `value`, `extra_value`) VALUES
-(1, 'refresh-token', '', ''),
-(2, 'simbolos_panel_general', '', ''),
-(3, 'simbolos_panel_cedears', '', '');
 
 -- --------------------------------------------------------
 
@@ -121,6 +127,12 @@ CREATE TABLE `panel_general` (
 --
 
 --
+-- Indices de la tabla `cotizacion_dolares`
+--
+ALTER TABLE `cotizacion_dolares`
+  ADD PRIMARY KEY (`id`);
+
+--
 -- Indices de la tabla `logs`
 --
 ALTER TABLE `logs`
@@ -149,6 +161,12 @@ ALTER TABLE `panel_general`
 --
 
 --
+-- AUTO_INCREMENT de la tabla `cotizacion_dolares`
+--
+ALTER TABLE `cotizacion_dolares`
+  MODIFY `id` int(10) NOT NULL AUTO_INCREMENT;
+
+--
 -- AUTO_INCREMENT de la tabla `logs`
 --
 ALTER TABLE `logs`
@@ -158,7 +176,7 @@ ALTER TABLE `logs`
 -- AUTO_INCREMENT de la tabla `options`
 --
 ALTER TABLE `options`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=9;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT;
 
 --
 -- AUTO_INCREMENT de la tabla `panel_cedears`
