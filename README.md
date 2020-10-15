@@ -4,6 +4,7 @@ Captura los datos de valores de la bolsa para volcarlos en algunas bases de dato
 
 ## Datos api
 * Invertir online (tiene un limite de llamadas por día)
+* Cotización dolares: https://www.dolarsi.com/api/api.php?type=valoresprincipales
 
 ## Bases de datos
 
@@ -20,8 +21,9 @@ Le debería agregar otras rutas para refrescar otros valores.
 
 ## Cron
 Me diante cron se ejecutan las distintas actualizaciones:  
-* Desde las 10:30 hasta las 17:30, se actualizan los valores cada una hora y se guardan en la mysql local.
-* A las 12:00 y a las 18 se actualiza firebase
+* Desde las 10:00 hasta las 17:00, se actualizan los valores cada una hora y se guardan en la mysql local.
+* A las las 18:30 se actualiza firebase
+* A las las 15:30 se actualiza la cotizacion de dolares
 
 Para agregar un cron hay que editar crontab -e y se abre el editor, allí hay que agregar tres lineas por ahora:
 

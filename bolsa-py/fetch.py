@@ -2,8 +2,8 @@ import urllib.request
 import urllib.parse
 import json
 
-#clase que hace los pedidos fetch a la base de invertir online
 
+#clase que hace los pedidos fetch a la base de invertir online
 class ApiInvertirOnline:
     """Database connection class."""
 
@@ -201,4 +201,47 @@ class ApiInvertirOnline:
 
         #finalmente, pase lo que pase, devuelve la respuesta con la info
         return respuesta
-            
+
+
+#clase que hace los pedidos fetch a la api de dolar si
+class ApiDolarSi:
+
+    """Database connection class."""
+
+    def __init__(self):
+        self.urlBase = 'https://www.dolarsi.com/api/api.php?type=valoresprincipales'
+
+
+    #Toma la data por get
+    def getFectchDataByGet(self):
+
+        respuesta = {}
+        respuesta['status'] = {}
+
+        urlFetch = self.urlBase
+
+        headers = {
+            "User-Agent": "Mozilla/5.0",
+            "Accept": "application/json",
+        }
+
+        req = urllib.request.Request(url=urlFetch, headers=headers)
+        
+        try:
+            response = urllib.request.urlopen(req)
+            respuesta['status']['code'] = 'ok'
+            respuesta['status']['error'] = False
+            respuesta['data'] = json.loads(response.read().decode('ascii'))
+            response.close()
+
+        except urllib.error.URLError as e:
+            if hasattr(e, 'code'):
+                print('Error Code: ', e.code)
+                respuesta['status']['code'] = 'token-error'
+                respuesta['status']['error'] = e.code
+           
+            elif hasattr(e, 'reason'):
+                print("Reason code: ", e.reason)
+                respuesta['status']['error'] = e.reason
+        
+        return respuesta

@@ -1,11 +1,11 @@
 import os
 import config
-import schedule
 import time 
 from db import Database
-from fetch import ApiInvertirOnline
+from fetch import ApiInvertirOnline, ApiDolarSi
+import decimal
 
-
+#mediante la api de invertir online hace un pedido y trae los paneles definidos y los guarda en mysql
 def insertSimbolosInDB():
 
     # VARIABLES VASICAS
@@ -80,17 +80,70 @@ def insertSimbolosInDB():
     print('ciclo terminado')
 
 
-# Actividad repetitiva:
-def intervaloUpdatingMerval():
+#mediante la api de dolar si  hace un pedido y trae los valores y los guarda en mysql
+def insertDolaresInDB():
+    dolarFetch = ApiDolarSi()
+    db = Database(config)
+    valores_dolar = dolarFetch.getFectchDataByGet()
+    
+    if valores_dolar['status']['code'] == 'ok':
+        valores = []  
 
-    # Timeout es para que se detenga luego de 8 horas (60 segudos multiplicado por 60 MINUTOS MULTIPLICADO POR 8)
-    timeout = time.time() + 60*60*8
+        for casa in valores_dolar['data']:
+            valor = casa['casa']
+            #valor['agencia']
+            #valor['compra']
+            #valor['decimales']
+            #valor['nombre']
+            #valor['variacion']
+            #valor['venta']
+            #valor['ventaCero']
+            if (valor['nombre'] == 'Dolar Oficial') :
+                slug = 'dolar-oficial'
+            elif (valor['nombre'] == 'Dolar Blue' ) : 
+                slug = 'dolar-blue'
+            elif (valor['nombre'] == 'Dolar Contado con Liqui' ) : 
+                slug = 'dolar-contado-liqui'
+            elif (valor['nombre'] == 'Dolar Bolsa' ) : 
+                slug = 'dolar-bolsa'
+            elif (valor['nombre'] == 'Dolar turista' ) : 
+                slug = 'dolar-turista'
+            else :
+                continue
+            
+            if valor['compra'] != 'No Cotiza' :
+                compra = valor['compra'].split(',')
+                compra = compra[0] + '.' + compra[1]
+                compra = decimal.Decimal(compra)
+            else :
+                compra = None
+            if valor['venta'] != 'No Cotiza' :
+                venta = valor['venta'].split(',')
+                venta = venta[0] + '.' + venta[1]
+                venta = decimal.Decimal(venta)
+            else :
+                venta = None
 
-    schedule.every(config.minutesInterval).minutes.do(insertSimbolosInDB)
+            valor = (valor['nombre'], slug, compra, venta)
+                
+            valores.append(valor)
+    
+        queryResponse = db.insert_dolares('cotizacion_dolares', valores)
+        print(queryResponse)
 
-    while True:
-        schedule.run_pending()
-        time.sleep(1)
+        #guarda log
+        error = 'ok'
+        extraData = 'dolares-actualizados'
+        query = "INSERT INTO `logs` (`error_code`, `extra-data` ) VALUES ('"+error+"', '"+extraData+"')"
+        db.run_query(query)
+    
+    else :
+        error = 'error-dolares'
+        extraData = str(valores_dolar['status']['code'])
+        query = "INSERT INTO `logs` (`error_code`, `extra-data` ) VALUES ('"+error+"', '"+extraData+"')"
+        db.run_query(query)
 
-        if time.time() > timeout:
-            break
+    return 'Cotización dolares actualizada'
+
+    
+    

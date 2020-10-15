@@ -1,6 +1,7 @@
 from flask import Flask
-from intervalos import insertSimbolosInDB
+from intervalos import insertSimbolosInDB, insertDolaresInDB
 from dataprocess import insertLastSimbolsValuesInFirebase, getSimbolosNames
+
 
 app = Flask(__name__)
 
@@ -26,10 +27,16 @@ def index():
             </a>
         </li>
         <li>
-            <a href="/update-simbols-option" target="_blank">
+            <a href="/update-simbols-option">
                 Actualiza el numbero de simbolos que sirve para actualizar firebase
             </a>
         </li>
+        <li>
+            <a href="/update-dolars">
+                Actualiza la cotización de dolares
+            </a>
+        </li>
+        
     </ul>
     """
 
@@ -51,6 +58,12 @@ def updateSimbolsNumbersByPanel():
     print('updating options simbols to know hoy many simbols are in any panel')
     getSimbolosNames()
     return 'simbols updated'
+
+@app.route('/update-dolars')
+def cotizacionesDolares():
+    print('updating cotizaciones dolares')
+    return insertDolaresInDB()
+    #return 'dolares updated'
 
 
 if __name__ == "__main__":
