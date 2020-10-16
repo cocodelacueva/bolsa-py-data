@@ -21,6 +21,12 @@ paneles = [
     }
 ]
 
+dolares = {
+    "mysql" : "cotizacion_dolares",
+    "firestore" : "cotizacion_dolares",
+    "default_limit": 5,
+}
+
 
 # MYSQL Database config
 db_user = environ.get('MYSQL_USER')

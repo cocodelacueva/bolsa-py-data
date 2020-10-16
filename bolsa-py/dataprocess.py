@@ -175,3 +175,30 @@ def getSimbolosNames():
 
         print(rlog)
 
+def insertLastDolarsValuesInFirebase():
+    print('dolartes')
+    dolaresConfig = config.dolares
+    db = Database(config)
+    fb = Firestore(config)
+
+    nuevoDocumento = {
+        "date": time.strftime('%Y-%m-%d %H:%M:%S'),
+        "valores" : []
+    }
+
+    query = "SELECT * FROM `"+str(dolaresConfig['mysql'])+"` LIMIT " + str(dolaresConfig['default_limit'])
+        
+    cotizaciones = db.run_query(query)
+
+    for cot in cotizaciones:
+        valor = {}
+
+        valor['nombre'] = str(cot['nombre'])
+        valor['slug'] = str(cot['slug'])
+        valor['compra'] = str(cot['compra'])
+        valor['venta'] = str(cot['venta'])
+        
+        nuevoDocumento['valores'].append(valor)
+
+    saveFS = fb.updateDocinCollection('cotizaciones', dolaresConfig['firestore'], nuevoDocumento)
+    print(saveFS)

@@ -1,6 +1,6 @@
 from flask import Flask
 from intervalos import insertSimbolosInDB, insertDolaresInDB
-from dataprocess import insertLastSimbolsValuesInFirebase, getSimbolosNames
+from dataprocess import insertLastSimbolsValuesInFirebase, getSimbolosNames, insertLastDolarsValuesInFirebase
 
 
 app = Flask(__name__)
@@ -11,27 +11,32 @@ def index():
     <h1>'App Bolsa PYthon MySQL!</h1>
     <h3>Routes:</h3>
     <ul>
-        <li>
+        <li style="margin:20px 0;">
             <a href="/update-valores">
                 /update-valores: from Api invertir online to mysql
             </a>
         </li>
-        <li>
+        <li style="margin:20px 0;">
             <a href="/update-firebase">
                 /update-firebase: from mysql to firebase
             </a>
         </li>
-        <li>
+        <li style="margin:20px 0;">
+            <a href="/update-dolares-firebase">
+                /update-dolares-firebase: from mysql to firebase
+            </a>
+        </li>
+       <li style="margin:20px 0;">
             <a href="http://192.168.0.160:8888/" target="_blank">
                 ver phpmyadmin
             </a>
         </li>
-        <li>
+        <li style="margin:20px 0;">
             <a href="/update-simbols-option">
                 Actualiza el numbero de simbolos que sirve para actualizar firebase
             </a>
         </li>
-        <li>
+        <li style="margin:20px 0;">
             <a href="/update-dolars">
                 Actualiza la cotización de dolares
             </a>
@@ -52,6 +57,13 @@ def updateFirebase():
     print('updating firestore, from or last records in local mysqls')
     insertLastSimbolsValuesInFirebase()
     return 'firestore updated'
+
+@app.route('/update-dolares-firebase')
+def updateDolaresFirebase():
+    print('updating firestore dolares, from or last records in local mysqls')
+    insertLastDolarsValuesInFirebase()
+    return 'firestore dolares updated'
+
 
 @app.route('/update-simbols-option')
 def updateSimbolsNumbersByPanel():
