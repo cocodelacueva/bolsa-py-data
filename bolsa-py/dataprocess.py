@@ -131,8 +131,9 @@ def insertLastSimbolsValuesInFirebase():
 
             newdoc["titulos"].append(newTitulo)
 
-        saveFS = fb.addDoc(newdoc, panel['firestore'])
+        saveFS = fb.updateDocinCollection('cotizaciones', panel['firestore'], newdoc)
         print(saveFS)
+        
         error = 'ok'
         extraData = 'firebase-actualizada-'+panel["mysql"]
         query = "INSERT INTO `logs` (`error_code`, `extra-data` ) VALUES ('"+error+"', '"+extraData+"')"

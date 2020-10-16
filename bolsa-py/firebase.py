@@ -47,3 +47,18 @@ class Firestore:
             valores.append(doc.to_dict())
 
         return valores
+
+    def updateDocinCollection(self, collection, documentoid, valores):
+        if firebase_admin._DEFAULT_APP_NAME in firebase_admin._apps:
+            print('firebase ya inicializada')
+            app = firebase_admin.get_app()
+            db = firestore.client()
+        else:
+            db = self.initCredentials()
+        
+        #doc = db.collection(collection).document(documentoid)
+        #resp = doc.update(valores)
+
+        resp = db.collection(collection).document(documentoid).set(valores)
+
+        return resp
