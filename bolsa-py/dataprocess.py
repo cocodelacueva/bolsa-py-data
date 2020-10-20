@@ -176,7 +176,6 @@ def getSimbolosNames():
         print(rlog)
 
 def insertLastDolarsValuesInFirebase():
-    print('dolartes')
     dolaresConfig = config.dolares
     db = Database(config)
     fb = Firestore(config)
@@ -186,7 +185,7 @@ def insertLastDolarsValuesInFirebase():
         "valores" : []
     }
 
-    query = "SELECT * FROM `"+str(dolaresConfig['mysql'])+"` LIMIT " + str(dolaresConfig['default_limit'])
+    query = "SELECT * FROM `"+str(dolaresConfig['mysql'])+"` WHERE date(timestamp)=CURDATE() LIMIT "+str(dolaresConfig['default_limit'])
         
     cotizaciones = db.run_query(query)
 
