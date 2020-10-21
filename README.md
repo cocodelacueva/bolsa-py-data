@@ -5,6 +5,7 @@ Captura los datos de valores de la bolsa para volcarlos en algunas bases de dato
 ## Datos api
 * Invertir online (tiene un limite de llamadas por día)
 * Cotización dolares: https://www.dolarsi.com/api/api.php?type=valoresprincipales
+* Qubit Broker, no es una api pero me da la data en json https://www.qubit.com.ar/c_value
 
 ## Bases de datos
 
@@ -31,6 +32,7 @@ Para agregar un cron hay que editar crontab -e y se abre el editor, allí hay qu
 1 12 * * 1-5 wget -q -O /dev/null "http://localhost:5000/update-firebase" > /dev/null 2>&1  
 30 15 * * 1-5 wget -q -O /dev/null "http://localhost:5000/update-dolars" > /dev/null 2>&1 
 01 16 * * 1-5 wget -q -O /dev/null "http://localhost:5000/update-dolares-firebase" > /dev/null 2>&1 
+01 10,15,17 * * 1-5 wget -q -O /dev/null "http://localhost:5000/update-digital-coins" > /dev/null 2>&1 
 
 
 
