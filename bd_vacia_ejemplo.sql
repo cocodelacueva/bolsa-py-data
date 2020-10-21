@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Servidor: db
--- Tiempo de generación: 15-10-2020 a las 02:26:12
+-- Tiempo de generación: 21-10-2020 a las 22:20:04
 -- Versión del servidor: 5.7.31
 -- Versión de PHP: 7.4.9
 
@@ -33,6 +33,20 @@ CREATE TABLE `cotizacion_dolares` (
   `slug` varchar(250) NOT NULL DEFAULT '',
   `compra` decimal(10,3) DEFAULT NULL,
   `venta` decimal(10,3) DEFAULT NULL,
+  `timestamp` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+
+-- --------------------------------------------------------
+
+--
+-- Estructura de tabla para la tabla `cotizacion_monedas`
+--
+
+CREATE TABLE `cotizacion_monedas` (
+  `id` int(10) NOT NULL,
+  `simbol` varchar(100) NOT NULL,
+  `valor_dolar` decimal(20,3) NOT NULL,
+  `valor_pesos` decimal(20,3) NOT NULL,
   `timestamp` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
@@ -133,6 +147,12 @@ ALTER TABLE `cotizacion_dolares`
   ADD PRIMARY KEY (`id`);
 
 --
+-- Indices de la tabla `cotizacion_monedas`
+--
+ALTER TABLE `cotizacion_monedas`
+  ADD PRIMARY KEY (`id`);
+
+--
 -- Indices de la tabla `logs`
 --
 ALTER TABLE `logs`
@@ -164,6 +184,12 @@ ALTER TABLE `panel_general`
 -- AUTO_INCREMENT de la tabla `cotizacion_dolares`
 --
 ALTER TABLE `cotizacion_dolares`
+  MODIFY `id` int(10) NOT NULL AUTO_INCREMENT;
+
+--
+-- AUTO_INCREMENT de la tabla `cotizacion_monedas`
+--
+ALTER TABLE `cotizacion_monedas`
   MODIFY `id` int(10) NOT NULL AUTO_INCREMENT;
 
 --

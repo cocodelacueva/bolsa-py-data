@@ -51,4 +51,4 @@ Para agregar un cron hay que editar crontab -e y se abre el editor, allí hay qu
 * crontab guru: https://crontab.guru/#1_10_*_*_1-5
 
 select mysql hoy: SELECT * FROM `panel_general` WHERE date(time_stamp)=CURDATE()
-docker exec -i mysql-container mysql -uuser -p123 bolsa < data.sql
+docker exec -i mysql-container mysql -uuser -p123 bolsa < bolsa.sql
