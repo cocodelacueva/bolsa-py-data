@@ -2,7 +2,7 @@ import os
 import config
 import time 
 from db import Database
-from fetch import ApiInvertirOnline, ApiDolarSi
+from fetch import ApiInvertirOnline, ApiDolarSi, ApiQubitBroker
 import decimal
 
 #mediante la api de invertir online hace un pedido y trae los paneles definidos y los guarda en mysql
@@ -147,3 +147,33 @@ def insertDolaresInDB():
 
     
     
+def insertDigitalCoinsInDB():
+    coinsFetch = ApiQubitBroker()
+    db = Database(config)
+    valores_coins = coinsFetch.getFectchDataByGet()
+
+    if valores_coins['status']['code'] == 'ok':
+        valores = []  
+        
+        for coin in valores_coins['data'].keys():
+            
+            valor = ( coin, valores_coins['data'][coin][1], valores_coins['data'][coin][2] )
+                
+            valores.append(valor)
+    
+        queryResponse = db.insert_monedas_digitales('cotizacion_monedas', valores)
+        print(queryResponse)
+
+        #guarda log
+        error = 'ok'
+        extraData = 'update-digital-coins'
+        query = "INSERT INTO `logs` (`error_code`, `extra-data` ) VALUES ('"+error+"', '"+extraData+"')"
+        db.run_query(query)
+    
+    else :
+        error = 'error-digital-coins'
+        extraData = str(valores_coins['status']['code'])
+        query = "INSERT INTO `logs` (`error_code`, `extra-data` ) VALUES ('"+error+"', '"+extraData+"')"
+        db.run_query(query)
+
+    return 'Monedas digitales actualizadas'

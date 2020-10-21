@@ -27,6 +27,12 @@ dolares = {
     "default_limit": 5,
 }
 
+monedasDigitales = {
+    "mysql" : "cotizacion_monedas",
+    "firestore" : "cotizacion_monedas",
+    "default_limit": 19,
+}
+
 
 # MYSQL Database config
 db_user = environ.get('MYSQL_USER')

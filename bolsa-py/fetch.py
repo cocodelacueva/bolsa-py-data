@@ -237,7 +237,50 @@ class ApiDolarSi:
         except urllib.error.URLError as e:
             if hasattr(e, 'code'):
                 print('Error Code: ', e.code)
-                respuesta['status']['code'] = 'token-error'
+                respuesta['status']['code'] = 'api-dolar-error'
+                respuesta['status']['error'] = e.code
+           
+            elif hasattr(e, 'reason'):
+                print("Reason code: ", e.reason)
+                respuesta['status']['error'] = e.reason
+        
+        return respuesta
+
+#clase que hace los pedidos fetch a la api de qubit broker, que no es una api en sí, pero me sirve la data
+class ApiQubitBroker:
+
+    """Database connection class."""
+
+    def __init__(self):
+        self.urlBase = 'https://www.qubit.com.ar/c_value'
+
+
+    #Toma la data por get
+    def getFectchDataByGet(self):
+
+        respuesta = {}
+        respuesta['status'] = {}
+
+        urlFetch = self.urlBase
+
+        headers = {
+            "User-Agent": "Mozilla/5.0",
+            "Accept": "application/json",
+        }
+
+        req = urllib.request.Request(url=urlFetch, headers=headers)
+        
+        try:
+            response = urllib.request.urlopen(req)
+            respuesta['status']['code'] = 'ok'
+            respuesta['status']['error'] = False
+            respuesta['data'] = json.loads(response.read().decode('ascii'))
+            response.close()
+
+        except urllib.error.URLError as e:
+            if hasattr(e, 'code'):
+                print('Error Code: ', e.code)
+                respuesta['status']['code'] = 'api-qubit-error'
                 respuesta['status']['error'] = e.code
            
             elif hasattr(e, 'reason'):

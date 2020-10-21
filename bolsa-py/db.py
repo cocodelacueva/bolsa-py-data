@@ -106,3 +106,7 @@ class Database:
     def insert_dolares(self, tabla, valores):
         query = """INSERT INTO `"""+tabla+"""` (`nombre`, `slug`, `compra`, `venta`) VALUES ( %s, %s, %s, %s )"""
         return self.insert_many_values(query, valores)
+
+    def insert_monedas_digitales(self, tabla, valores):
+        query = """INSERT INTO `"""+tabla+"""` (`simbol`, `valor_dolar`, `valor_pesos` ) VALUES ( %s, %s, %s )"""
+        return self.insert_many_values(query, valores)
