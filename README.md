@@ -29,10 +29,12 @@ Me diante cron se ejecutan las distintas actualizaciones:
 Para agregar un cron hay que editar crontab -e y se abre el editor, allí hay que agregar tres lineas por ahora:
 
 30 10-17 * * 1-5 wget -q -O /dev/null "http://localhost:5000/update-valores" > /dev/null 2>&1  
-1 12 * * 1-5 wget -q -O /dev/null "http://localhost:5000/update-firebase" > /dev/null 2>&1  
 30 15 * * 1-5 wget -q -O /dev/null "http://localhost:5000/update-dolars" > /dev/null 2>&1 
-01 16 * * 1-5 wget -q -O /dev/null "http://localhost:5000/update-dolares-firebase" > /dev/null 2>&1 
 01 10,15,17 * * 1-5 wget -q -O /dev/null "http://localhost:5000/update-digital-coins" > /dev/null 2>&1 
+
+1 12 * * 1-5 wget -q -O /dev/null "http://localhost:5000/update-firebase" > /dev/null 2>&1  
+01 16 * * 1-5 wget -q -O /dev/null "http://localhost:5000/update-dolares-firebase" > /dev/null 2>&1 
+15 18 * * 1-5 wget -q -O /dev/null "http://localhost:5000/update-digitalcoins-firebase" > /dev/null 2>&1 
 
 
 
