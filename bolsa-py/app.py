@@ -1,6 +1,6 @@
 from flask import Flask
 from intervalos import insertSimbolosInDB, insertDolaresInDB, insertDigitalCoinsInDB
-from dataprocess import insertLastSimbolsValuesInFirebase, getSimbolosNames, insertLastDolarsValuesInFirebase
+from dataprocess import insertLastDigitalCoinsValuesInFirebase, insertLastSimbolsValuesInFirebase, getSimbolosNames, insertLastDolarsValuesInFirebase
 
 
 app = Flask(__name__)
@@ -49,6 +49,11 @@ def index():
                 /update-dolares-firebase: from mysql to firebase
             </a>
         </li>
+        <li style="margin:20px 0;">
+            <a href="/update-digitalcoins-firebase">
+                /update-digitalcoins-firebase: from mysql to firebase
+            </a>
+        </li>
         
     </ul>
     """
@@ -74,8 +79,8 @@ def cotizacionesDolares():
 @app.route('/update-digital-coins')
 def cotizacionesMonedasDigitales():
     print('updating cotizaciones monedas digitales')
-    return insertDigitalCoinsInDB()
-    #return 'dolares updated'
+    insertDigitalCoinsInDB()
+    return 'digital coins updated'
 
 
 
@@ -91,6 +96,12 @@ def updateDolaresFirebase():
     print('updating firestore dolares, from or last records in local mysqls')
     insertLastDolarsValuesInFirebase()
     return 'firestore dolares updated'
+
+@app.route('/update-digitalcoins-firebase')
+def updateDigitalCoinsFirebase():
+    print('updating firestore digital coins, from or last records in local mysqls')
+    insertLastDigitalCoinsValuesInFirebase()
+    return 'firestore dolares updated end'
 
 
 if __name__ == "__main__":
