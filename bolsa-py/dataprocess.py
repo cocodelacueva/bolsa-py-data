@@ -72,7 +72,7 @@ def insertLastSimbolsValuesInFirebase():
         #armamos el documento nuevo para guardar en firebase
         newdoc = {
             "name_panel" : panel['name'],
-            "date": time.strftime('%Y-%m-%d %H:%M:%S'),
+            "date": time.strftime('%Y-%m-%d'),
             "titulos" : []
         }
 
@@ -131,7 +131,7 @@ def insertLastSimbolsValuesInFirebase():
 
             newdoc["titulos"].append(newTitulo)
 
-        saveFS = fb.updateDocinCollection('cotizaciones', panel['firestore'], newdoc)
+        saveFS = fb.addDoc(newdoc, panel['firestore'])
         print(saveFS)
         
         error = 'ok'
@@ -183,7 +183,7 @@ def insertLastDolarsValuesInFirebase():
     fb = Firestore(config)
 
     nuevoDocumento = {
-        "date": time.strftime('%Y-%m-%d %H:%M:%S'),
+        "date": time.strftime('%Y-%m-%d'),
         "valores" : []
     }
 
@@ -202,7 +202,7 @@ def insertLastDolarsValuesInFirebase():
             
             nuevoDocumento['valores'].append(valor)
 
-        saveFS = fb.updateDocinCollection('cotizaciones', dolaresConfig['firestore'], nuevoDocumento)
+        saveFS = fb.addDoc(nuevoDocumento, dolaresConfig['firestore'])
         print(saveFS)
 
 
@@ -213,11 +213,11 @@ def insertLastDigitalCoinsValuesInFirebase():
     fb = Firestore(config)
 
     nuevoDocumento = {
-        "date": time.strftime('%Y-%m-%d %H:%M:%S'),
+        "date": time.strftime('%Y-%m-%d'),
         "valores" : []
     }
 
-    query = "SELECT * FROM `"+str(dcoinsConfig['mysql'])+"` WHERE date(timestamp)=(CURDATE()-1) ORDER BY id DESC LIMIT "+str(dcoinsConfig['default_limit'])
+    query = "SELECT * FROM `"+str(dcoinsConfig['mysql'])+"` WHERE date(timestamp)=CURDATE() ORDER BY id DESC LIMIT "+str(dcoinsConfig['default_limit'])
 
     cotizaciones = db.run_query(query)
     
@@ -227,10 +227,10 @@ def insertLastDigitalCoinsValuesInFirebase():
             valor = {}
 
             valor['simbol'] = str(cot['simbol'])
-            valor['valorDolar'] = str(cot['valor_dolar'])
             valor['valorPesos'] = str(cot['valor_pesos'])
             
             nuevoDocumento['valores'].append(valor)
 
-        saveFS = fb.updateDocinCollection('cotizaciones', dcoinsConfig['firestore'], nuevoDocumento)
+        # saveFS = fb.updateDocinCollection('cotizaciones', dcoinsConfig['firestore'], nuevoDocumento)
+        saveFS = fb.addDoc(nuevoDocumento, dcoinsConfig['firestore'])
         print(saveFS)
