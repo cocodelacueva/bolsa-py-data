@@ -8,7 +8,7 @@ app = Flask(__name__)
 @app.route('/')
 def index():
     return """
-    <h1>'App Bolsa PYthon MySQL!</h1>
+    <h1>App Bolsa PYthon MySQL!</h1>
     <h3>Routes:</h3>
     <ul>
         <li style="margin:20px 0;">

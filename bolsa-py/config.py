@@ -30,7 +30,7 @@ dolares = {
 monedasDigitales = {
     "mysql" : "cotizacion_monedas",
     "firestore" : "cotizacion_monedas_digitales",
-    "default_limit": 19,
+    "default_limit": 21,
 }
 
 
