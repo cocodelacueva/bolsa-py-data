@@ -87,13 +87,19 @@ def insertLastSimbolsValuesInFirebase():
             
             if diferencia > 0:
                 tendencia = "sube"
-                dif = decimal.Decimal( ( (( titulo['ultimo_precio'] - titulo['ultimo_cierre'] ) / titulo['ultimo_cierre']) * 100) )
+                try:
+                    dif = decimal.Decimal( ( (( titulo['ultimo_precio'] - titulo['ultimo_cierre'] ) / titulo['ultimo_cierre']) * 100) )
+                except ZeroDivisionError:
+                    dif = 0
                 s = '{:0.2f}'.format(dif)
                 variacionDiaria = str( s + '%')
 
             elif diferencia < 0:
                 tendencia = "baja"
-                dif = decimal.Decimal( (( titulo['ultimo_cierre'] - titulo['ultimo_precio'] ) / titulo['ultimo_precio']) * 100)
+                try:
+                    dif = decimal.Decimal( (( titulo['ultimo_cierre'] - titulo['ultimo_precio'] ) / titulo['ultimo_precio']) * 100)
+                except ZeroDivisionError:
+                    dif = 0
                 s = '{:0.2f}'.format(dif)
                 variacionDiaria = str('-' + s + '%')
 
